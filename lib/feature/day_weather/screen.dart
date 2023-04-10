@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/feature/day_weather/components/weather_info.dart';
 
 class DayWeatherScreen extends StatefulWidget {
   const DayWeatherScreen({super.key});
@@ -10,6 +11,19 @@ class DayWeatherScreen extends StatefulWidget {
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Day Weather Screen')));
+    return Scaffold(
+      body: Center(
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          child: Column(
+            children: const [
+              Spacer(),
+              WeatherInfo(lowTemperature: '** ℃',highTemperature: '** ℃',),
+              Spacer()
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
