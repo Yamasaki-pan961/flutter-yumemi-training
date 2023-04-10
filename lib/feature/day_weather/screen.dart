@@ -16,10 +16,39 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
         child: FractionallySizedBox(
           widthFactor: 0.5,
           child: Column(
-            children: const [
-              Spacer(),
-              WeatherInfo(lowTemperature: '** ℃',highTemperature: '** ℃',),
-              Spacer()
+            children: [
+              const Spacer(),
+              const WeatherInfo(
+                lowTemperature: '** ℃',
+                highTemperature: '** ℃',
+              ),
+              Flexible(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 80),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Center(
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text('Close'),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Center(
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text('Reload'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
