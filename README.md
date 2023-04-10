@@ -1,16 +1,34 @@
-# flutter_training
+# ゆめみ　Flutter研修課題
 
-A new Flutter project.
+テンプレートはこちら
+- https://github.com/yumemi-inc/flutter-training-template
 
-## Getting Started
+## 環境構築
 
-This project is a starting point for a Flutter application.
+1. fvmをインストールする
 
-A few resources to get you started if this is your first Flutter project:
+↓Mac OS
+```bash
+brew tap leoafarias/fvm
+brew install fvm
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2.  リポジトリをクローンする
+```bash
+git clone https://github.com/Yamasaki-pan961/flutter-yumemi-training.git
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. 作業ディレクトリを変更する
+```bash
+cd flutter-yumemi-training
+```
+
+4. fvmに指定されたバージョンのFlutterをインストールする
+```bash
+fvm use
+```
+
+5. 依存パッケージをインストールする
+```
+fvm flutter pub get
+```
