@@ -12,15 +12,14 @@ class DayWeatherScreen extends StatefulWidget {
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
   final _dayWeatherRepository = DayWeatherRepository();
   WeatherType? _weatherType;
+  void _onReload() {
+    setState(() {
+      _weatherType = _dayWeatherRepository.fetch();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    void onReload() {
-      setState(() {
-        _weatherType = _dayWeatherRepository.fetch();
-      });
-    }
-
     return Scaffold(
       body: Center(
         child: FractionallySizedBox(
@@ -50,7 +49,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
                         Flexible(
                           child: Center(
                             child: TextButton(
-                              onPressed: onReload,
+                              onPressed: _onReload,
                               child: const Text('Reload'),
                             ),
                           ),
