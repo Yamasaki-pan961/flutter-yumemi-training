@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/common/components/weather_icon.dart';
 import 'package:flutter_training/common/models/weather_type.dart';
 import 'package:flutter_training/feature/day_weather/components/temperature_text.dart';
-import 'package:flutter_training/common/components/weather_icon.dart';
 
 class WeatherInfo extends StatelessWidget {
   const WeatherInfo({
@@ -18,11 +18,11 @@ class WeatherInfo extends StatelessWidget {
     return Column(
       children: [
         AspectRatio(
-              aspectRatio: 1,
-              child: weatherType == null
-                  ? const Placeholder()
-                  : WeatherIcon(weatherType: weatherType!),
-            ),
+          aspectRatio: 1,
+          child: weatherType == null
+              ? const Placeholder()
+              : WeatherIcon(weatherType: weatherType!),
+        ),
         const SizedBox(
           height: 16,
         ),
