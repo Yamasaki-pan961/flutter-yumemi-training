@@ -5,6 +5,17 @@ enum TemperatureType {
   low,
 }
 
+extension TemperatureTypeColor on TemperatureType {
+  Color get color {
+    switch (this) {
+      case TemperatureType.high:
+        return Colors.red;
+      case TemperatureType.low:
+        return Colors.blue;
+    }
+  }
+}
+
 class TemperatureText extends StatelessWidget {
   const TemperatureText({
     required this.temperature,
@@ -15,7 +26,7 @@ class TemperatureText extends StatelessWidget {
   final TemperatureType type;
   @override
   Widget build(BuildContext context) {
-    final color = type == TemperatureType.high ? Colors.red : Colors.blue;
+    final color = type.color;
     final labelLarge = Theme.of(context).textTheme.labelLarge;
     final textStyle = labelLarge?.copyWith(color: color);
     final text = '${temperature?.toString() ?? '**'} ℃';
