@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/common/models/weather_type.dart';
 import 'package:flutter_training/feature/day_weather/components/weather_info.dart';
+import 'package:flutter_training/feature/day_weather/repository.dart';
 
 class DayWeatherScreen extends StatefulWidget {
   const DayWeatherScreen({super.key});
@@ -9,6 +11,14 @@ class DayWeatherScreen extends StatefulWidget {
 }
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
+  final _dayWeatherRepository = DayWeatherRepository();
+  WeatherType? _weatherType;
+  void _onReload() {
+    setState(() {
+      _weatherType = _dayWeatherRepository.fetch();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +28,10 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
           child: Column(
             children: [
               const Spacer(),
-              const WeatherInfo(
+              WeatherInfo(
                 lowTemperature: null,
                 highTemperature: null,
+                weatherType: _weatherType,
               ),
               Flexible(
                 child: Column(
@@ -39,7 +50,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
                         Flexible(
                           child: Center(
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: _onReload,
                               child: const Text('Reload'),
                             ),
                           ),
