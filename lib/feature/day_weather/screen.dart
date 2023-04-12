@@ -9,6 +9,8 @@ class DayWeatherScreen extends StatefulWidget {
 }
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
+  WeatherType? _weatherType;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +20,10 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
           child: Column(
             children: [
               const Spacer(),
-              const WeatherInfo(
+              WeatherInfo(
                 lowTemperature: null,
                 highTemperature: null,
+                weatherType: _weatherType,
               ),
               Flexible(
                 child: Column(
