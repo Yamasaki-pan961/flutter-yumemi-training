@@ -16,6 +16,8 @@ dependencies:
       ref: main
       path: packages/yumemi_weather
 
+  flutter_svg: ^2.0.5
+
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
