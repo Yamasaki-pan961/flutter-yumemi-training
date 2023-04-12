@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/common/models/weather_type.dart';
 import 'package:flutter_training/feature/day_weather/components/temperature_text.dart';
 import 'package:flutter_training/feature/day_weather/components/weather_icon.dart';
-import 'package:flutter_training/feature/day_weather/repository.dart';
 
 class WeatherInfo extends StatelessWidget {
   const WeatherInfo({
