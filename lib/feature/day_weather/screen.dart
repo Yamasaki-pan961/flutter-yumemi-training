@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_training/feature/day_weather/components/weather_info.dart';
 import 'package:flutter_training/feature/day_weather/repository.dart';
 
-final dayWeatherRepository = DayWeatherRepository();
-
 class DayWeatherScreen extends StatefulWidget {
   const DayWeatherScreen({super.key});
 
@@ -12,13 +10,14 @@ class DayWeatherScreen extends StatefulWidget {
 }
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
+  final _dayWeatherRepository = DayWeatherRepository();
   WeatherType? _weatherType;
 
   @override
   Widget build(BuildContext context) {
     void onReload() {
       setState(() {
-        _weatherType = dayWeatherRepository.fetch();
+        _weatherType = _dayWeatherRepository.fetch();
       });
     }
 
