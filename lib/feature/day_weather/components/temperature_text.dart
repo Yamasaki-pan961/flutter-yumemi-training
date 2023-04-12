@@ -29,7 +29,7 @@ class TemperatureText extends StatelessWidget {
     final color = type.color;
     final labelLarge = Theme.of(context).textTheme.labelLarge;
     final textStyle = labelLarge?.copyWith(color: color);
-    final text = '${temperature?.toString() ?? '**'} ℃';
+    final text = '${temperature ?? '**'} ℃';
     return Text(
       text,
       textAlign: TextAlign.center,
