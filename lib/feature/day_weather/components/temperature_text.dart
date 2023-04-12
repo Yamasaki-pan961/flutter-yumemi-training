@@ -6,21 +6,21 @@ enum TemperatureType {
 }
 
 class TemperatureText extends StatelessWidget {
-  const TemperatureText(
-    this.data, {
+  const TemperatureText({
+    required this.temperature,
     required this.type,
     super.key,
   });
-  final String data;
+  final int? temperature;
   final TemperatureType type;
   @override
   Widget build(BuildContext context) {
     final color = type == TemperatureType.high ? Colors.red : Colors.blue;
     final labelLarge = Theme.of(context).textTheme.labelLarge;
     final textStyle = labelLarge?.copyWith(color: color);
-    
+    final text = '${temperature?.toString() ?? '**'} ℃';
     return Text(
-      data,
+      text,
       textAlign: TextAlign.center,
       style: textStyle,
     );

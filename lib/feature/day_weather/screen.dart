@@ -19,8 +19,8 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
             children: [
               const Spacer(),
               const WeatherInfo(
-                lowTemperature: '** ℃',
-                highTemperature: '** ℃',
+                lowTemperature: null,
+                highTemperature: null,
               ),
               Flexible(
                 child: Column(

@@ -7,8 +7,8 @@ class WeatherInfo extends StatelessWidget {
     required this.lowTemperature,
     super.key,
   });
-  final String highTemperature;
-  final String lowTemperature;
+  final int? highTemperature;
+  final int? lowTemperature;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,13 +23,13 @@ class WeatherInfo extends StatelessWidget {
               children: [
                 Expanded(
                   child: TemperatureText(
-                    lowTemperature,
+                    temperature: lowTemperature,
                     type: TemperatureType.low,
                   ),
                 ),
                 Expanded(
                   child: TemperatureText(
-                    highTemperature,
+                    temperature: highTemperature,
                     type: TemperatureType.high,
                   ),
                 ),
