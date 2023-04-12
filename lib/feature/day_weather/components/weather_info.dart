@@ -13,32 +13,28 @@ class WeatherInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
+        const AspectRatio(aspectRatio: 1, child: Placeholder()),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
           children: [
-            const AspectRatio(aspectRatio: 1, child: Placeholder()),
-            const SizedBox(
-              height: 16,
+            Expanded(
+              child: TemperatureText(
+                temperature: lowTemperature,
+                type: TemperatureType.low,
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TemperatureText(
-                    temperature: lowTemperature,
-                    type: TemperatureType.low,
-                  ),
-                ),
-                Expanded(
-                  child: TemperatureText(
-                    temperature: highTemperature,
-                    type: TemperatureType.high,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
+            Expanded(
+              child: TemperatureText(
+                temperature: highTemperature,
+                type: TemperatureType.high,
+              ),
             ),
           ],
+        ),
+        const SizedBox(
+          height: 16,
         ),
       ],
     );
