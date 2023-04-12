@@ -7,8 +7,10 @@ environment:
   sdk: ">=2.19.6 <3.0.0"
 
 dependencies:
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.5
 
   yumemi_weather:
     git:
@@ -16,15 +18,10 @@ dependencies:
       ref: main
       path: packages/yumemi_weather
 
-  flutter_svg: ^2.0.5
-
-  cupertino_icons: ^1.0.2
-
 dev_dependencies:
+  blendthink_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-
-  blendthink_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
