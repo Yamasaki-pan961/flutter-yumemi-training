@@ -19,6 +19,10 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
     });
   }
 
+  void _onClose() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +46,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
                         Flexible(
                           child: Center(
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: _onClose,
                               child: const Text('Close'),
                             ),
                           ),
