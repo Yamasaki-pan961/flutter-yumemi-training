@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/feature/day_weather/screen.dart';
+import 'package:flutter_training/feature/launch/screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DayWeatherScreen(),
+      home: const LaunchScreen(),
     );
   }
 }
