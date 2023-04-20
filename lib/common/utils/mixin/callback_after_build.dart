@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A mixin that can be used with a [StatefulWidget] to register a callback.
+///
 /// function [callbackAfterBuild] to be called after the widget is built.
 /// To use this mixin, create a class
 ///  that extends [StatefulWidget] and mixes in.
