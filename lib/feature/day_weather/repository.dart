@@ -14,6 +14,12 @@ class DayWeatherRepository {
       }
       return Result.success(weatherType);
     } on YumemiWeatherError catch (error) {
+      switch (error) {
+        case YumemiWeatherError.invalidParameter:
+          return const Result.failure('パラメータが間違っています');
+        case YumemiWeatherError.unknown:
+          return const Result.failure('不明なエラーが発生しました');
+      }
     }
   }
 }
