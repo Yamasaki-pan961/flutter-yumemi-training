@@ -87,7 +87,7 @@ class _FetchErrorDialog extends StatelessWidget {
       title: const Text('天気取得エラー'),
       content: Text(errorMessage),
       actions: [
-        MaterialButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('OK'),
         )
