@@ -71,3 +71,21 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
     );
   }
 }
+
+class _FetchErrorDialog extends StatelessWidget {
+  const _FetchErrorDialog({required this.errorMessage});
+  final String errorMessage;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('天気取得エラー'),
+      content: Text(errorMessage),
+      actions: [
+        MaterialButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        )
+      ],
+    );
+  }
+}
