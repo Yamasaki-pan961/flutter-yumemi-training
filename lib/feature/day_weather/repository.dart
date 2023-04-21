@@ -5,6 +5,14 @@ import 'package:yumemi_weather/yumemi_weather.dart';
 
 class DayWeatherRepository {
   final _client = YumemiWeather();
+
+  /// A method to fetch the weather for the day.
+  ///
+  /// Fetches the weather data from API and returns a [Result]
+  /// object representing either a success value of type
+  /// [WeatherType] or a failure value of type [String]
+  /// for a display text.
+
   Result<WeatherType, String> fetch() {
     try {
       final response = _client.fetchThrowsWeather('tokyo');
