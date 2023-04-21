@@ -14,9 +14,15 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
   final _dayWeatherRepository = DayWeatherRepository();
   WeatherType? _weatherType;
   void _onReload() {
-    setState(() {
-      _weatherType = _dayWeatherRepository.fetch();
-    });
+    _dayWeatherRepository.fetch().when(
+          success: (value) => setState(() => _weatherType = value),
+          failure: (value) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => _FetchErrorDialog(errorMessage: value),
+            );
+          },
+        );
   }
 
   void _onClose() {
