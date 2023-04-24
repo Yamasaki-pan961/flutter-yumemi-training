@@ -14,9 +14,15 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
   final _dayWeatherRepository = DayWeatherRepository();
   WeatherType? _weatherType;
   void _onReload() {
-    setState(() {
-      _weatherType = _dayWeatherRepository.fetch();
-    });
+    _dayWeatherRepository.fetch().when(
+          success: (value) => setState(() => _weatherType = value),
+          failure: (value) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => _FetchErrorDialog(errorMessage: value),
+            );
+          },
+        );
   }
 
   void _onClose() {
@@ -68,6 +74,24 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _FetchErrorDialog extends StatelessWidget {
+  const _FetchErrorDialog({required this.errorMessage});
+  final String errorMessage;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('天気取得エラー'),
+      content: Text(errorMessage),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        )
+      ],
     );
   }
 }
