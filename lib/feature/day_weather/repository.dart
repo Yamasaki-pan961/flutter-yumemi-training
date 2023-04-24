@@ -12,7 +12,6 @@ class DayWeatherRepository {
   /// object representing either a success value of type
   /// [WeatherType] or a failure value of type [String]
   /// for a display text.
-
   Result<WeatherType, String> fetch() {
     try {
       final response = _client.fetchThrowsWeather('tokyo');
