@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_training/common/models/result.dart';
 import 'package:flutter_training/common/models/weather_condition.dart';
 import 'package:flutter_training/common/utils/extensions/enum.dart';
@@ -13,15 +15,16 @@ class DayWeatherRepository {
   /// [WeatherCondition] or a failure value of type [String]
   /// for a display text.
 
-  Result<WeatherCondition, String> fetch() {
+  Result<Weather, String> fetch() {
+    final fetchDate = DateTime.now();
+    final payload = {'area': 'tokyo', 'date': fetchDate.toIso8601String()};
+    final jsonPayload = jsonEncode(payload);
+
     try {
-      final response = _client.fetchThrowsWeather('tokyo');
-      final weatherType = WeatherType.values.byNameOrNull(response);
-      final weatherCondition = WeatherCondition.values.byNameOrNull(response);
-      if (weatherCondition == null) {
-        return const Result.failure('不明な天気を取得しました');
-      }
-      return Result.success(weatherCondition);
+      final response = _client.fetchWeather(jsonPayload);
+      final json = jsonDecode(response) as Map<String, dynamic>;
+      final weather = Weather.fromJson(json);
+      return Result.success(weather);
     } on YumemiWeatherError catch (error) {
       switch (error) {
         case YumemiWeatherError.invalidParameter:
