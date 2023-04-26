@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_training/common/models/result.dart';
+import 'package:flutter_training/common/models/weather.dart';
 import 'package:flutter_training/common/models/weather_condition.dart';
-import 'package:flutter_training/common/utils/extensions/enum.dart';
+import 'package:simple_logger/simple_logger.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class DayWeatherRepository {
@@ -26,12 +27,16 @@ class DayWeatherRepository {
       final weather = Weather.fromJson(json);
       return Result.success(weather);
     } on YumemiWeatherError catch (error) {
+      SimpleLogger().shout(error);
       switch (error) {
         case YumemiWeatherError.invalidParameter:
           return const Result.failure('パラメータが間違っています');
         case YumemiWeatherError.unknown:
           return const Result.failure('不明なエラーが発生しました');
       }
+    } on FormatException catch (error) {
+      SimpleLogger().shout(error);
+      return const Result.failure('不適切なデータを取得しました');
     }
   }
 }
