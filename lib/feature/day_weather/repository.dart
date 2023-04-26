@@ -1,5 +1,5 @@
 import 'package:flutter_training/common/models/result.dart';
-import 'package:flutter_training/common/models/weather_type.dart';
+import 'package:flutter_training/common/models/weather_condition.dart';
 import 'package:flutter_training/common/utils/extensions/enum.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
@@ -10,16 +10,18 @@ class DayWeatherRepository {
   ///
   /// Fetches the weather data from API and returns a [Result]
   /// object representing either a success value of type
-  /// [WeatherType] or a failure value of type [String]
+  /// [WeatherCondition] or a failure value of type [String]
   /// for a display text.
-  Result<WeatherType, String> fetch() {
+
+  Result<WeatherCondition, String> fetch() {
     try {
       final response = _client.fetchThrowsWeather('tokyo');
       final weatherType = WeatherType.values.byNameOrNull(response);
-      if (weatherType == null) {
+      final weatherCondition = WeatherCondition.values.byNameOrNull(response);
+      if (weatherCondition == null) {
         return const Result.failure('不明な天気を取得しました');
       }
-      return Result.success(weatherType);
+      return Result.success(weatherCondition);
     } on YumemiWeatherError catch (error) {
       switch (error) {
         case YumemiWeatherError.invalidParameter:

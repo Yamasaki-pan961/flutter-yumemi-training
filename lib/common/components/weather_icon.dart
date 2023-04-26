@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_training/common/models/weather_type.dart';
+import 'package:flutter_training/common/models/weather_condition.dart';
 
 class WeatherIcon extends StatelessWidget {
-  const WeatherIcon({required this.weatherType, super.key});
-  final WeatherType weatherType;
+  const WeatherIcon({required this.weatherCondition, super.key});
+  final WeatherCondition weatherCondition;
 
   @override
   Widget build(BuildContext context) {
     const iconDirectoryPath = 'assets/images/weather_icons/';
-    final iconPath = '$iconDirectoryPath${weatherType.name}.svg';
+    final iconPath = '$iconDirectoryPath${weatherCondition.name}.svg';
     return SvgPicture.asset(iconPath);
   }
 }
