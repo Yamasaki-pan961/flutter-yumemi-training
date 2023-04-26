@@ -31,13 +31,13 @@ class WeatherInfo extends StatelessWidget {
             Expanded(
               child: TemperatureText(
                 temperature: lowTemperature,
-                type: TemperatureType.low,
+                type: TemperatureType.min,
               ),
             ),
             Expanded(
               child: TemperatureText(
                 temperature: highTemperature,
-                type: TemperatureType.high,
+                type: TemperatureType.max,
               ),
             ),
           ],
