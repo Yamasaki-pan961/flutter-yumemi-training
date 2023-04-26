@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/common/models/weather_condition.dart';
+import 'package:flutter_training/common/models/weather.dart';
 import 'package:flutter_training/feature/day_weather/components/weather_info.dart';
 import 'package:flutter_training/feature/day_weather/repository.dart';
 
@@ -12,10 +12,10 @@ class DayWeatherScreen extends StatefulWidget {
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
   final _dayWeatherRepository = DayWeatherRepository();
-  WeatherCondition? _weatherCondition;
+  Weather? _weather;
   void _onReload() {
     _dayWeatherRepository.fetch().when(
-          success: (value) => setState(() => _weatherCondition = value),
+          success: (value) => setState(() => _weather = value),
           failure: (value) {
             showDialog<void>(
               context: context,
@@ -39,9 +39,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
             children: [
               const Spacer(),
               WeatherInfo(
-                lowTemperature: null,
-                highTemperature: null,
-                weatherCondition: _weatherCondition,
+                weather: _weather,
               ),
               Flexible(
                 child: Column(

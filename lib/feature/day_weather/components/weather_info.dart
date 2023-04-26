@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/common/components/weather_icon.dart';
-import 'package:flutter_training/common/models/weather_condition.dart';
+import 'package:flutter_training/common/models/weather.dart';
 import 'package:flutter_training/feature/day_weather/components/temperature_text.dart';
 
 class WeatherInfo extends StatelessWidget {
   const WeatherInfo({
-    required this.highTemperature,
-    required this.lowTemperature,
-    required this.weatherCondition,
+    required this.weather,
     super.key,
   });
-  final int? highTemperature;
-  final int? lowTemperature;
-  final WeatherCondition? weatherCondition;
+  final Weather? weather;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         AspectRatio(
           aspectRatio: 1,
-          child: weatherCondition == null
+          child: weather?.weatherCondition == null
               ? const Placeholder()
-              : WeatherIcon(weatherCondition: weatherCondition!),
+              : WeatherIcon(weatherCondition: weather!.weatherCondition),
         ),
         const SizedBox(
           height: 16,
@@ -30,13 +26,13 @@ class WeatherInfo extends StatelessWidget {
           children: [
             Expanded(
               child: TemperatureText(
-                temperature: lowTemperature,
+                temperature: weather?.minTemperature,
                 type: TemperatureType.min,
               ),
             ),
             Expanded(
               child: TemperatureText(
-                temperature: highTemperature,
+                temperature: weather?.maxTemperature,
                 type: TemperatureType.max,
               ),
             ),
