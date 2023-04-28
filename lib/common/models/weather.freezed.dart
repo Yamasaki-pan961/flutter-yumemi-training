@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Weather _$WeatherFromJson(Map<String, dynamic> json) {
+  return _Weather.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Weather {
   WeatherCondition get weatherCondition => throw _privateConstructorUsedError;
@@ -21,6 +25,7 @@ mixin _$Weather {
   int get minTemperature => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $WeatherCopyWith<Weather> get copyWith => throw _privateConstructorUsedError;
 }
@@ -127,13 +132,16 @@ class __$$_WeatherCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Weather implements _Weather {
   _$_Weather(
       {required this.weatherCondition,
       required this.maxTemperature,
       required this.minTemperature,
       required this.date});
+
+  factory _$_Weather.fromJson(Map<String, dynamic> json) =>
+      _$$_WeatherFromJson(json);
 
   @override
   final WeatherCondition weatherCondition;
@@ -163,6 +171,7 @@ class _$_Weather implements _Weather {
             (identical(other.date, date) || other.date == date));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, weatherCondition, maxTemperature, minTemperature, date);
@@ -172,6 +181,13 @@ class _$_Weather implements _Weather {
   @pragma('vm:prefer-inline')
   _$$_WeatherCopyWith<_$_Weather> get copyWith =>
       __$$_WeatherCopyWithImpl<_$_Weather>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_WeatherToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Weather implements Weather {
@@ -180,6 +196,8 @@ abstract class _Weather implements Weather {
       required final int maxTemperature,
       required final int minTemperature,
       required final DateTime date}) = _$_Weather;
+
+  factory _Weather.fromJson(Map<String, dynamic> json) = _$_Weather.fromJson;
 
   @override
   WeatherCondition get weatherCondition;
