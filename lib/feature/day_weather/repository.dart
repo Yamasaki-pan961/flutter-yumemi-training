@@ -24,9 +24,15 @@ class DayWeatherRepository {
 
     try {
       final response = _client.fetchWeather(jsonPayload);
-      final json = jsonDecode(response) as Map<String, dynamic>;
-      final weather = Weather.fromJson(json);
-      return Result.success(weather);
+      try {
+        final json = jsonDecode(response) as Map<String, dynamic>;
+        final weather = Weather.fromJson(json);
+        return Result.success(weather);
+      } on CheckedFromJsonException catch (error) {
+        SimpleLogger().info('\nFetched Response: $response');
+        SimpleLogger().shout(error);
+        return const Result.failure('不適切なデータを取得しました');
+      }
     } on YumemiWeatherError catch (error) {
       SimpleLogger().shout(error);
       switch (error) {
@@ -35,9 +41,6 @@ class DayWeatherRepository {
         case YumemiWeatherError.unknown:
           return const Result.failure('不明なエラーが発生しました');
       }
-    } on CheckedFromJsonException catch (error) {
-      SimpleLogger().shout(error);
-      return const Result.failure('不適切なデータを取得しました');
     }
   }
 }
