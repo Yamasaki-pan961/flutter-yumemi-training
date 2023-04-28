@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_training/common/models/result.dart';
-import 'package:flutter_training/common/models/weather_type.dart';
-import 'package:flutter_training/common/utils/extensions/enum.dart';
+import 'package:flutter_training/common/models/weather.dart';
+import 'package:flutter_training/common/models/weather_condition.dart';
+import 'package:simple_logger/simple_logger.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class DayWeatherRepository {
@@ -10,23 +13,30 @@ class DayWeatherRepository {
   ///
   /// Fetches the weather data from API and returns a [Result]
   /// object representing either a success value of type
-  /// [WeatherType] or a failure value of type [String]
+  /// [WeatherCondition] or a failure value of type [String]
   /// for a display text.
-  Result<WeatherType, String> fetch() {
+
+  Result<Weather, String> fetch() {
+    final fetchDate = DateTime.now();
+    final payload = {'area': 'tokyo', 'date': fetchDate.toIso8601String()};
+    final jsonPayload = jsonEncode(payload);
+
     try {
-      final response = _client.fetchThrowsWeather('tokyo');
-      final weatherType = WeatherType.values.byNameOrNull(response);
-      if (weatherType == null) {
-        return const Result.failure('不明な天気を取得しました');
-      }
-      return Result.success(weatherType);
+      final response = _client.fetchWeather(jsonPayload);
+      final json = jsonDecode(response) as Map<String, dynamic>;
+      final weather = Weather.fromJson(json);
+      return Result.success(weather);
     } on YumemiWeatherError catch (error) {
+      SimpleLogger().shout(error);
       switch (error) {
         case YumemiWeatherError.invalidParameter:
           return const Result.failure('パラメータが間違っています');
         case YumemiWeatherError.unknown:
           return const Result.failure('不明なエラーが発生しました');
       }
+    } on FormatException catch (error) {
+      SimpleLogger().shout(error);
+      return const Result.failure('不適切なデータを取得しました');
     }
   }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 enum TemperatureType {
-  high,
-  low,
+  max,
+  min,
 }
 
 extension TemperatureTypeColor on TemperatureType {
   Color get color {
     switch (this) {
-      case TemperatureType.high:
+      case TemperatureType.max:
         return Colors.red;
-      case TemperatureType.low:
+      case TemperatureType.min:
         return Colors.blue;
     }
   }

@@ -10,7 +10,13 @@
       "type": "dart",
       "flutterMode": "debug",
       "program": "lib/main.dart",
-      
+    },
+    {
+      "name": "Release",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
     },
   ]
 }
