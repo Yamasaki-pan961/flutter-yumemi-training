@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/common/models/weather.dart';
+import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/feature/day_weather/components/weather_info.dart';
 import 'package:flutter_training/feature/day_weather/repository.dart';
 
