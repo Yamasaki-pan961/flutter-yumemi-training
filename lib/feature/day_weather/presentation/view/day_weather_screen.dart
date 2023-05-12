@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
-import 'package:flutter_training/feature/day_weather/presentation/view/components/weather_info.dart';
 import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
+import 'package:flutter_training/feature/day_weather/presentation/view/components/weather_info.dart';
 
 class DayWeatherScreen extends StatefulWidget {
   const DayWeatherScreen({super.key});
