@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
+import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
 import 'package:flutter_training/feature/day_weather/presentation/view/components/weather_info.dart';
 
 class DayWeatherScreen extends StatefulWidget {
@@ -11,18 +12,18 @@ class DayWeatherScreen extends StatefulWidget {
 }
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
-  final _dayWeatherRepository = YumemiDayWeatherRepository();
+  final _fetchDayWeather = FetchDayWeatherUseCase(YumemiDayWeatherRepository());
   Weather? _weather;
   void _onReload() {
-    _dayWeatherRepository.fetch().when(
-          success: (value) => setState(() => _weather = value),
-          failure: (value) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => _FetchErrorDialog(errorMessage: value),
-            );
-          },
+    _fetchDayWeather().when(
+      success: (value) => setState(() => _weather = value),
+      failure: (value) {
+        showDialog<void>(
+          context: context,
+          builder: (context) => _FetchErrorDialog(errorMessage: value),
         );
+      },
+    );
   }
 
   void _onClose() {
