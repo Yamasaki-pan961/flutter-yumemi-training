@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_training/common/models/result.dart';
+import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/common/models/weather.dart';
 import 'package:flutter_training/common/models/weather_condition.dart';
 import 'package:json_annotation/json_annotation.dart';
