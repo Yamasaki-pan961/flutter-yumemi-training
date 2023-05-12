@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/feature/day_weather/presentation/view/components/weather_info.dart';
-import 'package:flutter_training/feature/day_weather/repository.dart';
+import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
 
 class DayWeatherScreen extends StatefulWidget {
   const DayWeatherScreen({super.key});
@@ -11,7 +11,7 @@ class DayWeatherScreen extends StatefulWidget {
 }
 
 class _DayWeatherScreenState extends State<DayWeatherScreen> {
-  final _dayWeatherRepository = DayWeatherRepository();
+  final _dayWeatherRepository = YumemiDayWeatherRepository();
   Weather? _weather;
   void _onReload() {
     _dayWeatherRepository.fetch().when(

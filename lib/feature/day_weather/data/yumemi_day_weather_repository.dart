@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/domain/entities/weather_condition.dart';
+import 'package:flutter_training/common/utils/result.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-class DayWeatherRepository {
+class YumemiDayWeatherRepository {
   final _client = YumemiWeather();
 
   /// A method to fetch the weather for the day.
