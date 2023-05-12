@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/common/components/weather_icon.dart';
+import 'package:flutter_training/common/presentation/view/components/weather_icon.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/feature/day_weather/components/temperature_text.dart';
 
