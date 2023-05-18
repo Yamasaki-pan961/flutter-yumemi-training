@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/common/domain/entities/weather.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/common/presentation/view/components/weather_icon.dart';
+import 'package:flutter_training/feature/day_weather/presentation/presenter/day_weather_provider.dart';
 import 'package:flutter_training/feature/day_weather/presentation/view/components/temperature_text.dart';
 
-class WeatherInfo extends StatelessWidget {
-  const WeatherInfo({
-    required this.weather,
-    super.key,
-  });
-  final Weather? weather;
+class WeatherInfo extends ConsumerWidget {
+  const WeatherInfo({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final weather = ref.watch(dayWeatherProvider);
     return Column(
       children: [
         AspectRatio(
