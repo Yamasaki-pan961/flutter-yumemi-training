@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/feature/launch/screen.dart';
+import 'package:flutter_training/feature/launch/presentation/view/launch_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

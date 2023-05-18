@@ -32,3 +32,9 @@ fvm use
 ```
 fvm flutter pub get
 ```
+
+---
+## アーキテクチャ
+クリーンアーキテクチャの概念を基に作成しました。
+
+[ARCHITECTURE.md](/docs/architecture/ARCHITECTURE.md)

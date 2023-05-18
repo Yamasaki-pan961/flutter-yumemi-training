@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/common/utils/mixin/callback_after_build.dart';
-import 'package:flutter_training/feature/day_weather/screen.dart';
+import 'package:flutter_training/feature/day_weather/presentation/view/day_weather_screen.dart';
 
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({super.key});

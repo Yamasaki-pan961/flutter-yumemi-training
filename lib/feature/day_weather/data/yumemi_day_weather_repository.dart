@@ -1,25 +1,18 @@
 import 'dart:convert';
 
-import 'package:flutter_training/common/models/result.dart';
-import 'package:flutter_training/common/models/weather.dart';
-import 'package:flutter_training/common/models/weather_condition.dart';
+import 'package:flutter_training/common/domain/entities/weather.dart';
+import 'package:flutter_training/common/utils/result.dart';
+import 'package:flutter_training/feature/day_weather/domain/repository/day_weather_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-class DayWeatherRepository {
+class YumemiDayWeatherRepository implements DayWeatherRepository {
   final _client = YumemiWeather();
 
-  /// A method to fetch the weather for the day.
-  ///
-  /// Fetches the weather data from API and returns a [Result]
-  /// object representing either a success value of type
-  /// [WeatherCondition] or a failure value of type [String]
-  /// for a display text.
-
-  Result<Weather, String> fetch() {
-    final fetchDate = DateTime.now();
-    final payload = {'area': 'tokyo', 'date': fetchDate.toIso8601String()};
+  @override
+  Result<Weather, String> fetch(String area, DateTime date) {
+    final payload = {'area': 'tokyo', 'date': date.toIso8601String()};
     final jsonPayload = jsonEncode(payload);
 
     try {
