@@ -1,37 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/common/domain/entities/weather.dart';
-import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
-import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_training/feature/day_weather/presentation/presenter/day_weather_provider.dart';
 import 'package:flutter_training/feature/day_weather/presentation/view/components/weather_info.dart';
 
-class DayWeatherScreen extends StatefulWidget {
+class DayWeatherScreen extends ConsumerWidget {
   const DayWeatherScreen({super.key});
 
   @override
-  State<DayWeatherScreen> createState() => _DayWeatherScreenState();
-}
-
-class _DayWeatherScreenState extends State<DayWeatherScreen> {
-  final _fetchDayWeather = FetchDayWeatherUseCase(YumemiDayWeatherRepository());
-  Weather? _weather;
-  void _onReload() {
-    _fetchDayWeather().when(
-      success: (value) => setState(() => _weather = value),
-      failure: (value) {
-        showDialog<void>(
-          context: context,
-          builder: (context) => _FetchErrorDialog(errorMessage: value),
+  Widget build(BuildContext context, WidgetRef ref) {
+    void onClose() => Navigator.of(context).pop();
+    void onReload() => ref.read(dayWeatherProvider.notifier).fetchWeather(
+          (errorMessage) => showDialog<void>(
+            context: context,
+            builder: (context) => _FetchErrorDialog(errorMessage: errorMessage),
+          ),
         );
-      },
-    );
-  }
 
-  void _onClose() {
-    Navigator.of(context).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: FractionallySizedBox(
@@ -39,9 +23,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
           child: Column(
             children: [
               const Spacer(),
-              WeatherInfo(
-                weather: _weather,
-              ),
+              const WeatherInfo(),
               Flexible(
                 child: Column(
                   children: [
@@ -51,7 +33,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
                         Flexible(
                           child: Center(
                             child: TextButton(
-                              onPressed: _onClose,
+                              onPressed: onClose,
                               child: const Text('Close'),
                             ),
                           ),
@@ -59,7 +41,7 @@ class _DayWeatherScreenState extends State<DayWeatherScreen> {
                         Flexible(
                           child: Center(
                             child: TextButton(
-                              onPressed: _onReload,
+                              onPressed: onReload,
                               child: const Text('Reload'),
                             ),
                           ),
