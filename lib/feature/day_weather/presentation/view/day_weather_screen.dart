@@ -10,7 +10,7 @@ class DayWeatherScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void onClose() => Navigator.of(context).pop();
     void onReload() => ref.read(dayWeatherProvider.notifier).fetchWeather(
-          (errorMessage) => showDialog<void>(
+          onError: (errorMessage) => showDialog<void>(
             context: context,
             builder: (context) => _FetchErrorDialog(errorMessage: errorMessage),
           ),

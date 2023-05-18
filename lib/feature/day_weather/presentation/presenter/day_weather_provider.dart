@@ -19,7 +19,7 @@ class DayWeather extends _$DayWeather {
   @override
   Weather? build() => null;
 
-  void fetchWeather(void Function(String errorMessage)? onError) {
+  void fetchWeather({void Function(String errorMessage)? onError}) {
     ref.read(fetchDayWeatherUseCaseProvider).call().when(
           success: (weather) => state = weather,
           failure: (errorMessage) {
