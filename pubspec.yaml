@@ -26,11 +26,13 @@ dependencies:
 dev_dependencies:
   blendthink_lints: ^3.0.0
   build_runner: ^2.3.3
+  custom_lint: ^0.3.4
   flutter_test:
     sdk: flutter
   freezed: ^2.3.2
   json_serializable: ^6.6.1
   riverpod_generator: ^2.2.1
+  riverpod_lint: ^1.3.1
 
 flutter:
   uses-material-design: true
