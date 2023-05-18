@@ -81,6 +81,6 @@ API：アプリケーション外部のAPI
 ---
 ## Presentation
 Presenter：
-Viewで表示するデータを扱ったたり、ViewからUseCaseを扱えるように間を持つ
+Viewで表示するデータを扱ったり、ViewからUseCaseを扱えるように間を持つ
 
 View：WidgetなどによりUIを構築する
