@@ -33,7 +33,8 @@ class RiverpodTestTools {
 @GenerateMocks([FetchDayWeatherUseCase])
 void main() {
   group(
-    'Test the number of calls to fetch() and use case',
+    'Test the number of calls to '
+    'dayWeatherProvider.fetchWeather() and use case',
     () {
       // Arrange
       final resultForMatcher = Result<Weather, String>.success(
@@ -47,7 +48,7 @@ void main() {
       final useCaseMock = MockFetchDayWeatherUseCase();
       when(useCaseMock()).thenReturn(resultForMatcher);
 
-      test('0 calls to use case when 0 calls to fetch()', () {
+      test('0 calls to use case when 0 calls to fetchWeather()', () {
         // Arrange
         final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
 
@@ -63,7 +64,7 @@ void main() {
       });
 
       test(
-        '1 calls to use case when 1 calls to fetch()',
+        '1 calls to use case when 1 calls to fetchWeather()',
         () {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
@@ -83,7 +84,7 @@ void main() {
       );
 
       test(
-        '2 calls to use case when 2 calls to fetch()',
+        '2 calls to use case when 2 calls to fetchWeather()',
         () {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
