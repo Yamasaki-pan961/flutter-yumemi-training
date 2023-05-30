@@ -103,4 +103,74 @@ void main() {
       );
     },
   );
+
+  group('Test dayWeatherProvider state', () {
+    // Arrange
+    final useCaseMock = MockFetchDayWeatherUseCase();
+    test('Default state is null', () {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
+
+      // Act
+      final actual = riverpodTestTools.container.read(dayWeatherProvider);
+
+      // Assert
+      expect(actual, null);
+    });
+
+    test(
+        'The first time fetchWeather() returns success, '
+        'the state changes from null to Weather', () {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
+      final weather = Weather(
+        weatherCondition: WeatherCondition.rainy,
+        maxTemperature: 20,
+        minTemperature: 10,
+        date: DateTime(2023),
+      );
+      final result = Result<Weather, String>.success(
+        weather,
+      );
+      when(useCaseMock()).thenReturn(result);
+
+      // Act
+      riverpodTestTools.container
+          .read(dayWeatherProvider.notifier)
+          .fetchWeather();
+
+      // Assert
+      verify(riverpodTestTools.listener(null, weather)).called(1);
+    });
+
+    test(
+        'When fetchWeather() returns failure on the second or subsequent call,'
+        ' state changes from null to Weather', () {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
+      final weather = Weather(
+        weatherCondition: WeatherCondition.rainy,
+        maxTemperature: 20,
+        minTemperature: 10,
+        date: DateTime(2023),
+      );
+      final resultSuccess = Result<Weather, String>.success(
+        weather,
+      );
+      const resultFailure = Result<Weather, String>.failure('');
+
+      // Act
+      when(useCaseMock()).thenReturn(resultSuccess);
+      riverpodTestTools.container
+          .read(dayWeatherProvider.notifier)
+          .fetchWeather();
+      when(useCaseMock()).thenReturn(resultFailure);
+      riverpodTestTools.container
+          .read(dayWeatherProvider.notifier)
+          .fetchWeather();
+
+      // Assert
+      verify(riverpodTestTools.listener(weather, null)).called(1);
+    });
+  });
 }
