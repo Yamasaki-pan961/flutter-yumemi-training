@@ -8,9 +8,8 @@ import 'package:simple_logger/simple_logger.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class YumemiDayWeatherRepository implements DayWeatherRepository {
-
-  const YumemiDayWeatherRepository(this._client);
-  final YumemiWeather _client;
+  const YumemiDayWeatherRepository(this._yumemiWeather);
+  final YumemiWeather _yumemiWeather;
 
   @override
   Result<Weather, String> fetch(String area, DateTime date) {
@@ -18,7 +17,7 @@ class YumemiDayWeatherRepository implements DayWeatherRepository {
     final jsonPayload = jsonEncode(payload);
 
     try {
-      final response = _client.fetchWeather(jsonPayload);
+      final response = _yumemiWeather.fetchWeather(jsonPayload);
       try {
         final json = jsonDecode(response) as Map<String, dynamic>;
         final weather = Weather.fromJson(json);
