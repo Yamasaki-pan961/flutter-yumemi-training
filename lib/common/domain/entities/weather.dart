@@ -1,8 +1,9 @@
-import 'package:flutter_training/common/domain/entities/weather_condition.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'weather.freezed.dart';
 part 'weather.g.dart';
+
+enum WeatherCondition { sunny, rainy, cloudy }
 
 @freezed
 class Weather with _$Weather {

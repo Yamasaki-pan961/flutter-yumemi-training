@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_training/common/domain/entities/weather_condition.dart';
+import 'package:flutter_training/common/domain/entities/weather.dart';
 
 class WeatherIcon extends StatelessWidget {
   const WeatherIcon({required this.weatherCondition, super.key});
