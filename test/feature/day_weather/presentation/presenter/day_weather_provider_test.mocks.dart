@@ -35,10 +35,6 @@ class _FakeResult_0<T, U> extends _i1.SmartFake implements _i2.Result<T, U> {
 /// See the documentation for Mockito's code generation for more information.
 class MockFetchDayWeatherUseCase extends _i1.Mock
     implements _i3.FetchDayWeatherUseCase {
-  MockFetchDayWeatherUseCase() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   _i2.Result<_i4.Weather, String> call() => (super.noSuchMethod(
         Invocation.method(
@@ -46,6 +42,13 @@ class MockFetchDayWeatherUseCase extends _i1.Mock
           [],
         ),
         returnValue: _FakeResult_0<_i4.Weather, String>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+          ),
+        ),
+        returnValueForMissingStub: _FakeResult_0<_i4.Weather, String>(
           this,
           Invocation.method(
             #call,

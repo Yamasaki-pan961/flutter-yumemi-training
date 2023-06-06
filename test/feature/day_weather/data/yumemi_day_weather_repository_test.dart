@@ -6,8 +6,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-@GenerateMocks([
-  YumemiWeather,
+@GenerateNiceMocks([
+  MockSpec<YumemiWeather>(),
 ])
 import 'yumemi_day_weather_repository_test.mocks.dart';
 

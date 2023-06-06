@@ -30,7 +30,9 @@ class RiverpodTestTools {
   final listener = Listener<Weather?>();
 }
 
-@GenerateMocks([FetchDayWeatherUseCase])
+@GenerateNiceMocks([
+  MockSpec<FetchDayWeatherUseCase>(),
+])
 void main() {
   group(
     'Test the number of calls to '

@@ -21,10 +21,6 @@ import 'package:yumemi_weather/src/yumemi_weather_base.dart' as _i2;
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockYumemiWeather extends _i1.Mock implements _i2.YumemiWeather {
-  MockYumemiWeather() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   String fetchSimpleWeather() => (super.noSuchMethod(
         Invocation.method(
@@ -32,6 +28,7 @@ class MockYumemiWeather extends _i1.Mock implements _i2.YumemiWeather {
           [],
         ),
         returnValue: '',
+        returnValueForMissingStub: '',
       ) as String);
   @override
   String fetchThrowsWeather(String? area) => (super.noSuchMethod(
@@ -40,6 +37,7 @@ class MockYumemiWeather extends _i1.Mock implements _i2.YumemiWeather {
           [area],
         ),
         returnValue: '',
+        returnValueForMissingStub: '',
       ) as String);
   @override
   String fetchWeather(String? jsonString) => (super.noSuchMethod(
@@ -48,6 +46,7 @@ class MockYumemiWeather extends _i1.Mock implements _i2.YumemiWeather {
           [jsonString],
         ),
         returnValue: '',
+        returnValueForMissingStub: '',
       ) as String);
   @override
   String syncFetchWeather(String? jsonString) => (super.noSuchMethod(
@@ -56,5 +55,6 @@ class MockYumemiWeather extends _i1.Mock implements _i2.YumemiWeather {
           [jsonString],
         ),
         returnValue: '',
+        returnValueForMissingStub: '',
       ) as String);
 }
