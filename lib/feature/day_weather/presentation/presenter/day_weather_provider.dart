@@ -18,7 +18,7 @@ FetchDayWeatherUseCase fetchDayWeatherUseCase(FetchDayWeatherUseCaseRef ref) =>
 @riverpod
 class DayWeather extends _$DayWeather {
   @override
-  Weather? build() => null;
+  Weather? build({Weather? initialValue}) => null;
 
   void fetchWeather({void Function(String errorMessage)? onError}) {
     ref.read(fetchDayWeatherUseCaseProvider).call().when(
