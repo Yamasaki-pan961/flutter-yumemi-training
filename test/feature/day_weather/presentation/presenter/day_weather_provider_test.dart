@@ -18,12 +18,15 @@ class RiverpodTestTools {
   RiverpodTestTools({required FetchDayWeatherUseCase useCaseMock})
       : container = ProviderContainer(
           overrides: [
-            fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
+            fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
           ],
         ) {
     addTearDown(container.dispose);
 
-    container.listen<Weather?>(dayWeatherProvider, listener);
+    container.listen<Weather?>(
+      dayWeatherProvider(),
+      listener,
+    );
   }
 
   final ProviderContainer container;
@@ -73,7 +76,7 @@ void main() {
 
           // Act
           riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+              .read(dayWeatherProvider().notifier)
               .fetchWeather();
 
           // Assert
@@ -93,10 +96,10 @@ void main() {
 
           // Act
           riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+              .read(dayWeatherProvider().notifier)
               .fetchWeather();
           riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+              .read(dayWeatherProvider().notifier)
               .fetchWeather();
 
           // Assert
@@ -114,7 +117,7 @@ void main() {
       final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
 
       // Act
-      final actual = riverpodTestTools.container.read(dayWeatherProvider);
+      final actual = riverpodTestTools.container.read(dayWeatherProvider());
 
       // Assert
       expect(actual, null);
@@ -138,7 +141,7 @@ void main() {
 
       // Act
       riverpodTestTools.container
-          .read(dayWeatherProvider.notifier)
+          .read(dayWeatherProvider().notifier)
           .fetchWeather();
 
       // Assert
@@ -162,13 +165,9 @@ void main() {
       const resultFailure = Result<Weather, String>.failure('');
 
       // Act
-      when(useCaseMock()).thenReturn(resultSuccess);
-      riverpodTestTools.container
-          .read(dayWeatherProvider.notifier)
-          .fetchWeather();
       when(useCaseMock()).thenReturn(resultFailure);
       riverpodTestTools.container
-          .read(dayWeatherProvider.notifier)
+          .read(dayWeatherProvider().notifier)
           .fetchWeather();
 
       // Assert
