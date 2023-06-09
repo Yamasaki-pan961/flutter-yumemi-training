@@ -8,7 +8,7 @@ class WeatherInfo extends ConsumerWidget {
   const WeatherInfo({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final weather = ref.watch(dayWeatherProvider());
+    final weather = ref.watch(dayWeatherProvider);
     return Column(
       children: [
         AspectRatio(
