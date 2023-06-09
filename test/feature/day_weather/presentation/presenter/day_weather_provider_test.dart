@@ -13,8 +13,8 @@ class Listener<T> extends Mock {
   void call(T? previous, T value);
 }
 
-class TestDayWether extends DayWeather {
-  TestDayWether(this._initialValue);
+class TestDayWetherNotifier extends DayWeather {
+  TestDayWetherNotifier(this._initialValue);
 
   final Weather? _initialValue;
   @override
@@ -29,7 +29,8 @@ class RiverpodTestTools {
   }) : container = ProviderContainer(
           overrides: [
             fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
-            dayWeatherProvider.overrideWith(() => TestDayWether(initialWeather))
+            dayWeatherProvider
+                .overrideWith(() => TestDayWetherNotifier(initialWeather))
           ],
         ) {
     addTearDown(container.dispose);
