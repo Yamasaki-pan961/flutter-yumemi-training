@@ -15,8 +15,10 @@ class Listener<T> extends Mock {
 
 /// Initialize and hold Riverpod containers and listeners
 class RiverpodTestTools {
-  RiverpodTestTools({required FetchDayWeatherUseCase useCaseMock})
-      : container = ProviderContainer(
+  RiverpodTestTools({
+    required FetchDayWeatherUseCase useCaseMock,
+    Weather? initWeather,
+  }) : container = ProviderContainer(
           overrides: [
             fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
           ],
@@ -24,7 +26,7 @@ class RiverpodTestTools {
     addTearDown(container.dispose);
 
     container.listen<Weather?>(
-      dayWeatherProvider(),
+      dayWeatherProvider(initialValue: initWeather),
       listener,
     );
   }
@@ -152,20 +154,18 @@ void main() {
         'When fetchWeather() returns failure on the second or subsequent call,'
         ' state changes from null to Weather', () {
       // Arrange
-      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
       final weather = Weather(
         weatherCondition: WeatherCondition.rainy,
         maxTemperature: 20,
         minTemperature: 10,
         date: DateTime(2023),
       );
-      final resultSuccess = Result<Weather, String>.success(
-        weather,
-      );
+      final riverpodTestTools =
+          RiverpodTestTools(useCaseMock: useCaseMock, initWeather: weather);
       const resultFailure = Result<Weather, String>.failure('');
+      when(useCaseMock()).thenReturn(resultFailure);
 
       // Act
-      when(useCaseMock()).thenReturn(resultFailure);
       riverpodTestTools.container
           .read(dayWeatherProvider().notifier)
           .fetchWeather();

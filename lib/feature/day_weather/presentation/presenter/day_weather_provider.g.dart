@@ -41,7 +41,7 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'f01d35dc67510023352908269c803c9863770e2d';
+String _$dayWeatherHash() => r'184e57f63da2925dd88089bb9782937770757fa3';
 
 /// Copied from Dart SDK
 class _SystemHash {
