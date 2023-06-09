@@ -160,8 +160,8 @@ void main() {
     });
 
     test(
-        'When fetchWeather() returns failure on the second or subsequent call,'
-        ' state changes from null to Weather', () {
+        'When fetchWeather() returns failure,'
+        ' state changes from Weather to null', () {
       // Arrange
       final weather = Weather(
         weatherCondition: WeatherCondition.rainy,
