@@ -92,11 +92,7 @@ void main() {
               .fetchWeather();
 
           // Assert
-          verify(
-            riverpodTestTool.container
-                .read(fetchDayWeatherUseCaseProvider)
-                .call(),
-          ).called(1);
+          verify(useCaseMock.call()).called(1);
         },
       );
 
@@ -115,7 +111,7 @@ void main() {
               .fetchWeather();
 
           // Assert
-          verify(useCaseMock()).called(2);
+          verify(useCaseMock.call()).called(2);
         },
       );
     },
