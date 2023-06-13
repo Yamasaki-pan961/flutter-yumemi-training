@@ -167,7 +167,7 @@ void main() {
 
       // Act
       riverpodTestTools.container
-          .read(dayWeatherProvider().notifier)
+          .read(dayWeatherProvider(initialValue: weather).notifier)
           .fetchWeather();
 
       // Assert
