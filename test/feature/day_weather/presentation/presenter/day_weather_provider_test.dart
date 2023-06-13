@@ -67,7 +67,7 @@ void main() {
 
       test('0 calls to use case when 0 calls to fetchWeather()', () {
         // Arrange
-        final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
+        RiverpodTestTools(useCaseMock: useCaseMock);
 
         // Act
         // 0 calls to fetch()
