@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/utils/result.dart';
@@ -63,7 +63,7 @@ void main() {
         ),
       );
       final useCaseMock = MockFetchDayWeatherUseCase();
-      when(useCaseMock()).thenReturn(resultForMatcher);
+      when(useCaseMock.call()).thenReturn(resultForMatcher);
 
       test('0 calls to use case when 0 calls to fetchWeather()', () {
         // Arrange
@@ -74,9 +74,7 @@ void main() {
 
         // Assert
         verifyNever(
-          riverpodTestTool.container
-              .read(fetchDayWeatherUseCaseProvider)
-              .call(),
+          useCaseMock.call(),
         );
       });
 
@@ -145,7 +143,7 @@ void main() {
       final result = Result<Weather, String>.success(
         weather,
       );
-      when(useCaseMock()).thenReturn(result);
+      when(useCaseMock.call()).thenReturn(result);
 
       // Act
       riverpodTestTools.container
@@ -173,7 +171,7 @@ void main() {
       );
 
       const resultFailure = Result<Weather, String>.failure('');
-      when(useCaseMock()).thenReturn(resultFailure);
+      when(useCaseMock.call()).thenReturn(resultFailure);
 
       // Act
       riverpodTestTools.container
