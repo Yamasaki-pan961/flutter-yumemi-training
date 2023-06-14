@@ -11,5 +11,9 @@
     "leoafarias",
     "riverpod",
     "yumemi"
-  ]
+  ],
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "$(capture).g.dart, $(capture).freezed.dart"
+  }
 }

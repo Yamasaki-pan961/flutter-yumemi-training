@@ -3,12 +3,13 @@ import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_rep
 import 'package:flutter_training/feature/day_weather/domain/repository/day_weather_repository.dart';
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:yumemi_weather/yumemi_weather.dart';
 
 part 'day_weather_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 DayWeatherRepository dayWeatherRepository(DayWeatherRepositoryRef ref) =>
-    YumemiDayWeatherRepository();
+    YumemiDayWeatherRepository(YumemiWeather());
 
 @Riverpod(keepAlive: true)
 FetchDayWeatherUseCase fetchDayWeatherUseCase(FetchDayWeatherUseCaseRef ref) =>
