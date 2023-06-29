@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:page_object/page_object.dart';
 
@@ -15,5 +16,6 @@ abstract class Robot<W extends Widget> extends PageObject {
 
   final WidgetTester tester;
 
-  Widget ready(Widget widget) => MaterialApp(home: widget);
+  Widget wrapRootWidget(Widget widget) =>
+      ProviderScope(child: MaterialApp(home: widget));
 }
