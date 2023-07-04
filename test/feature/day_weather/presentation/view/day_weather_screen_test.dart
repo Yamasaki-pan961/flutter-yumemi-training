@@ -54,9 +54,10 @@ void main() async {
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-
+          // Action
           await robot.tapReloadButton();
 
+          // Expectation
           robot.weatherInfo.weatherIcon
             ..expectExist()
             ..svgPicture
@@ -76,8 +77,10 @@ void main() async {
             ],
           );
 
+          // Action
           await robot.tapReloadButton();
 
+          // Expectation
           robot.weatherInfo.weatherIcon
             ..expectExist()
             ..svgPicture
@@ -98,8 +101,10 @@ void main() async {
             ],
           );
 
+          // Action
           await robot.tapReloadButton();
 
+          // Expectation
           robot.weatherInfo.weatherIcon
             ..expectExist()
             ..svgPicture
@@ -120,8 +125,10 @@ void main() async {
             ],
           );
 
+          // Action
           await robot.tapReloadButton();
 
+          // Expectation
           robot.weatherInfo.weatherIcon
             ..expectExist()
             ..svgPicture
@@ -142,8 +149,10 @@ void main() async {
             ],
           );
 
+          // Action
           await robot.tapReloadButton();
 
+          // Expectation
           robot.weatherInfo
             ..maxTemperatureText.expectWithText('31 ℃')
             ..minTemperatureText.expectWithText('-19 ℃');
