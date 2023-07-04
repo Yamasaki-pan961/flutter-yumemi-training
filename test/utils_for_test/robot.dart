@@ -13,6 +13,7 @@ abstract class Robot<W extends Widget> extends PageObject {
             matching: find.byType(W),
           ),
         );
+  Robot.withKey(this.tester, Key key) : super(find.byKey(key));
 
   final WidgetTester tester;
 
