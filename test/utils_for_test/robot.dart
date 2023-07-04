@@ -17,6 +17,12 @@ abstract class Robot<W extends Widget> extends PageObject {
 
   final WidgetTester tester;
 
-  Widget wrapRootWidget(Widget widget) =>
-      ProviderScope(child: MaterialApp(home: widget));
+  Widget wrapRootWidget(
+    Widget widget, {
+    List<Override> providerOverrides = const [],
+  }) =>
+      ProviderScope(
+        overrides: providerOverrides,
+        child: MaterialApp(home: widget),
+      );
 }
