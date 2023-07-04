@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/feature/day_weather/presentation/view/day_weather_screen.dart';
 
 import '../../../../utils_for_test/robot.dart';
+import 'components/weather_info_robot.dart';
 
 class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
   DayWeatherScreenRobot(super.tester);
@@ -11,10 +13,18 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
   Finder get _closeButton => find.byKey(DayWeatherScreen.closeButtonKey);
   Finder get _reloadButton => find.byKey(DayWeatherScreen.reloadButtonKey);
   Finder get _dialog => find.byType(Dialog);
+  WeatherInfoRobot get weatherInfo => WeatherInfoRobot.child(tester, this);
 
   // Actions
-  Future<void> showScreen() async {
-    await tester.pumpWidget(wrapRootWidget(const DayWeatherScreen()));
+  Future<void> showScreen({
+    List<Override> providerOverrides = const [],
+  }) async {
+    await tester.pumpWidget(
+      wrapRootWidget(
+        const DayWeatherScreen(),
+        providerOverrides: providerOverrides,
+      ),
+    );
     await tester.pumpAndSettle();
   }
 
