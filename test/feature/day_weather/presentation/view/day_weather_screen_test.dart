@@ -150,5 +150,22 @@ void main() async {
         });
       },
     );
+
+    testWidgets('when a fetching fails', (widgetTester) async {
+      // Arrange
+      final useCaseMock = MockFetchDayWeatherUseCase();
+      const result = Result<Weather, String>.failure('特定のエラーメッセージ');
+      when(useCaseMock()).thenReturn(result);
+      final robot = DayWeatherScreenRobot(widgetTester);
+      await robot.showScreen(
+        providerOverrides: [
+          fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
+        ],
+      );
+
+      await robot.tapReloadButton();
+
+      robot.expectDialogShownWithMessage('特定のエラーメッセージ');
+    });
   });
 }
