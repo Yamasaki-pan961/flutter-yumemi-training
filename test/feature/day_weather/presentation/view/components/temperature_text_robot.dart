@@ -8,7 +8,6 @@ class TemperatureTextRobot extends Robot<TemperatureText> {
   TemperatureTextRobot.withKey(super.tester, super.key) : super.withKey();
 
   // Expectation
-  void expectNotExist(TemperatureType type) => expect(this, findsNothing);
   void expectWithText(String text) => expect(
         find.descendant(of: this, matching: find.text(text)),
         findsOneWidget,
