@@ -7,11 +7,9 @@ import 'package:flutter_training/feature/day_weather/presentation/view/component
 class WeatherInfo extends ConsumerWidget {
   const WeatherInfo({super.key});
 
-  @protected
   @visibleForTesting
   static final maxTemperatureKey = UniqueKey();
 
-  @protected
   @visibleForTesting
   static final minTemperatureKey = UniqueKey();
 

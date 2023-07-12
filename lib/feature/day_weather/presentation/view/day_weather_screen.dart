@@ -6,11 +6,9 @@ import 'package:flutter_training/feature/day_weather/presentation/view/component
 class DayWeatherScreen extends ConsumerWidget {
   const DayWeatherScreen({super.key});
 
-  @protected
   @visibleForTesting
   static final reloadButtonKey = UniqueKey();
 
-  @protected
   @visibleForTesting
   static final closeButtonKey = UniqueKey();
 
