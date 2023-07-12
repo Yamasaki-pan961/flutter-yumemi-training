@@ -7,16 +7,38 @@ import 'svg_picture_robot.dart';
 class WeatherIconRobot extends Robot<WeatherIcon> {
   WeatherIconRobot(super.tester, super.parent) : super.child();
 
-  SvgPictureRobot get svgPicture => SvgPictureRobot(tester);
+  SvgPictureRobot get _svgPicture => SvgPictureRobot(tester);
 
-  // Expectation
+// Expectation
   void expectNotExist() => expect(this, findsNothing);
-  void expectExist() => expect(this, findsOneWidget);
+
+  void _expectExist() => expect(this, findsOneWidget);
+
+  void expectSunnyIconToBeShown() {
+    _expectExist();
+    _svgPicture.expectAssetToBeShown(
+      assetName: WeatherIconAssetNames._sunny,
+    );
+  }
+
+  void expectRainyIconToBeShown() {
+    _expectExist();
+    _svgPicture.expectAssetToBeShown(
+      assetName: WeatherIconAssetNames._rainy,
+    );
+  }
+
+  void expectCloudyIconToBeShown() {
+    _expectExist();
+    _svgPicture.expectAssetToBeShown(
+      assetName: WeatherIconAssetNames._cloudy,
+    );
+  }
 }
 
 class WeatherIconAssetNames {
-  static const path = 'assets/images/weather_icons/';
-  static const rainy =  '${path}rainy.svg';
-  static const cloudy =  '${path}cloudy.svg';
-  static const sunny =  '${path}sunny.svg';
+  static const _path = 'assets/images/weather_icons/';
+  static const _rainy = '${_path}rainy.svg';
+  static const _cloudy = '${_path}cloudy.svg';
+  static const _sunny = '${_path}sunny.svg';
 }

@@ -6,7 +6,6 @@ import 'package:flutter_training/feature/day_weather/presentation/presenter/day_
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../common/presentation/view/components/weather_icon_robot.dart';
 import '../../../../utils_for_test/display_size.dart';
 import 'day_weather_screen_robot.dart';
 import 'day_weather_screen_test.mocks.dart';
@@ -60,10 +59,7 @@ void main() async {
           await robot.tapReloadButton();
 
           // Expectation
-          robot.weatherInfo.weatherIcon
-            ..expectExist()
-            ..svgPicture
-                .expectAssetToBeShown(assetName: WeatherIconAssetNames.sunny);
+          robot.weatherInfo.weatherIcon.expectSunnyIconToBeShown();
         });
         testWidgets('cloudy icon is displayed', (widgetTester) async {
           // Arrange
@@ -83,10 +79,7 @@ void main() async {
           await robot.tapReloadButton();
 
           // Expectation
-          robot.weatherInfo.weatherIcon
-            ..expectExist()
-            ..svgPicture
-                .expectAssetToBeShown(assetName: WeatherIconAssetNames.cloudy);
+          robot.weatherInfo.weatherIcon.expectCloudyIconToBeShown();
         });
 
         testWidgets('cloudy icon is displayed', (widgetTester) async {
@@ -107,10 +100,7 @@ void main() async {
           await robot.tapReloadButton();
 
           // Expectation
-          robot.weatherInfo.weatherIcon
-            ..expectExist()
-            ..svgPicture
-                .expectAssetToBeShown(assetName: WeatherIconAssetNames.cloudy);
+          robot.weatherInfo.weatherIcon.expectCloudyIconToBeShown();
         });
 
         testWidgets('rainy icon is displayed', (widgetTester) async {
@@ -131,10 +121,7 @@ void main() async {
           await robot.tapReloadButton();
 
           // Expectation
-          robot.weatherInfo.weatherIcon
-            ..expectExist()
-            ..svgPicture
-                .expectAssetToBeShown(assetName: WeatherIconAssetNames.rainy);
+          robot.weatherInfo.weatherIcon.expectRainyIconToBeShown();
         });
 
         testWidgets('temperature is displayed', (widgetTester) async {
