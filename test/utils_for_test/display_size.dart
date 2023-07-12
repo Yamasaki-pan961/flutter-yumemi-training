@@ -6,3 +6,9 @@ void setDisplaySize({Size size = const Size(390, 844)}) {
   binding.window.physicalSizeTestValue = size;
   binding.window.devicePixelRatioTestValue = 1;
 }
+
+void clearDisplaySize() {
+  final binding = TestWidgetsFlutterBinding.ensureInitialized();
+  binding.window.clearPhysicalSizeTestValue();
+  binding.window.clearDevicePixelRatioTestValue();
+}
