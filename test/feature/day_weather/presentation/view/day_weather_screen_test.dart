@@ -18,9 +18,13 @@ void main() async {
   tearDown(clearDisplaySize);
 
   testWidgets('Test the screen before data acquisition', (widgetTester) async {
+    // Arrange
     final robot = DayWeatherScreenRobot(widgetTester);
+
+    // Action
     await robot.showScreen();
 
+    // Expectation
     robot
       ..expectCloseButtonShown()
       ..expectReloadButtonShown()
@@ -50,12 +54,13 @@ void main() async {
           );
           when(useCaseMock()).thenReturn(result);
           final robot = DayWeatherScreenRobot(widgetTester);
+
+          // Action
           await robot.showScreen(
             providerOverrides: [
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-          // Action
           await robot.tapReloadButton();
 
           // Expectation
@@ -69,13 +74,13 @@ void main() async {
           );
           when(useCaseMock()).thenReturn(result);
           final robot = DayWeatherScreenRobot(widgetTester);
+
+          // Action
           await robot.showScreen(
             providerOverrides: [
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-
-          // Action
           await robot.tapReloadButton();
 
           // Expectation
@@ -90,13 +95,13 @@ void main() async {
           );
           when(useCaseMock()).thenReturn(result);
           final robot = DayWeatherScreenRobot(widgetTester);
+
+          // Action
           await robot.showScreen(
             providerOverrides: [
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-
-          // Action
           await robot.tapReloadButton();
 
           // Expectation
@@ -111,13 +116,13 @@ void main() async {
           );
           when(useCaseMock()).thenReturn(result);
           final robot = DayWeatherScreenRobot(widgetTester);
+
+          // Action
           await robot.showScreen(
             providerOverrides: [
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-
-          // Action
           await robot.tapReloadButton();
 
           // Expectation
@@ -132,13 +137,13 @@ void main() async {
           );
           when(useCaseMock()).thenReturn(result);
           final robot = DayWeatherScreenRobot(widgetTester);
+
+          // Action
           await robot.showScreen(
             providerOverrides: [
               fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
             ],
           );
-
-          // Action
           await robot.tapReloadButton();
 
           // Expectation
@@ -155,14 +160,16 @@ void main() async {
       const result = Result<Weather, String>.failure('特定のエラーメッセージ');
       when(useCaseMock()).thenReturn(result);
       final robot = DayWeatherScreenRobot(widgetTester);
+
+      // Action
       await robot.showScreen(
         providerOverrides: [
           fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock)
         ],
       );
-
       await robot.tapReloadButton();
 
+      // Expectation
       robot.expectDialogShownWithMessage('特定のエラーメッセージ');
     });
   });
