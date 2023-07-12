@@ -15,7 +15,9 @@ import 'day_weather_screen_test.mocks.dart';
   MockSpec<FetchDayWeatherUseCase>(),
 ])
 void main() async {
-  setDisplaySize();
+  setUp(setDisplaySize);
+  tearDown(clearDisplaySize);
+
   testWidgets('Test the screen before data acquisition', (widgetTester) async {
     final robot = DayWeatherScreenRobot(widgetTester);
     await robot.showScreen();
