@@ -1,15 +1,28 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/presentation/view/components/weather_icon.dart';
 
 import '../../../../utils_for_test/robot.dart';
 import 'svg_picture_robot.dart';
 
 class WeatherIconRobot extends Robot<WeatherIcon> {
-  WeatherIconRobot(super.tester, super.parent) : super.child();
+  WeatherIconRobot(super.tester);
+
+  WeatherIconRobot.child(super.tester, super.parent) : super.child();
 
   SvgPictureRobot get _svgPicture => SvgPictureRobot(tester);
 
-// Expectation
+  // Actions
+  Future<void> showScreen(WeatherCondition weatherCondition) async {
+    await tester.pumpWidget(
+      wrapRootWidget(
+        WeatherIcon(weatherCondition: weatherCondition),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  // Expectation
   void expectNotExist() => expect(this, findsNothing);
 
   void _expectExist() => expect(this, findsOneWidget);

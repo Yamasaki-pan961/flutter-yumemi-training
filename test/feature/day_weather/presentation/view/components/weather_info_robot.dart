@@ -9,7 +9,7 @@ class WeatherInfoRobot extends Robot<WeatherInfo> {
   WeatherInfoRobot.child(super.tester, super.parent) : super.child();
 
   // Finders
-  WeatherIconRobot get weatherIcon => WeatherIconRobot(tester, this);
+  WeatherIconRobot get weatherIcon => WeatherIconRobot.child(tester, this);
   TemperatureTextRobot get maxTemperatureText =>
       TemperatureTextRobot.withKey(tester, WeatherInfo.maxTemperatureKey);
 
