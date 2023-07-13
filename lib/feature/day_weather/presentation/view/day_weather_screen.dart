@@ -6,6 +6,12 @@ import 'package:flutter_training/feature/day_weather/presentation/view/component
 class DayWeatherScreen extends ConsumerWidget {
   const DayWeatherScreen({super.key});
 
+  @visibleForTesting
+  static final reloadButtonKey = UniqueKey();
+
+  @visibleForTesting
+  static final closeButtonKey = UniqueKey();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onClose() => Navigator.of(context).pop();
@@ -33,6 +39,7 @@ class DayWeatherScreen extends ConsumerWidget {
                         Flexible(
                           child: Center(
                             child: TextButton(
+                              key: closeButtonKey,
                               onPressed: onClose,
                               child: const Text('Close'),
                             ),
@@ -41,6 +48,7 @@ class DayWeatherScreen extends ConsumerWidget {
                         Flexible(
                           child: Center(
                             child: TextButton(
+                              key: reloadButtonKey,
                               onPressed: onReload,
                               child: const Text('Reload'),
                             ),

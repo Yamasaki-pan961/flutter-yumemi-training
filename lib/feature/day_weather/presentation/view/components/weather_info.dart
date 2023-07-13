@@ -6,6 +6,13 @@ import 'package:flutter_training/feature/day_weather/presentation/view/component
 
 class WeatherInfo extends ConsumerWidget {
   const WeatherInfo({super.key});
+
+  @visibleForTesting
+  static final maxTemperatureKey = UniqueKey();
+
+  @visibleForTesting
+  static final minTemperatureKey = UniqueKey();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weather = ref.watch(dayWeatherProvider);
@@ -24,12 +31,14 @@ class WeatherInfo extends ConsumerWidget {
           children: [
             Expanded(
               child: TemperatureText(
+                key: minTemperatureKey,
                 temperature: weather?.minTemperature,
                 type: TemperatureType.min,
               ),
             ),
             Expanded(
               child: TemperatureText(
+                key: maxTemperatureKey,
                 temperature: weather?.maxTemperature,
                 type: TemperatureType.max,
               ),
