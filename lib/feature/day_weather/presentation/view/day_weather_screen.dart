@@ -14,6 +14,20 @@ class DayWeatherScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(dayWeatherProvider, (prev, current) {
+      if (prev?.isRefreshing ?? false) {
+        Navigator.of(context).pop();
+      }
+      if (current.isRefreshing) {
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+    });
     void onClose() => Navigator.of(context).pop();
     void onReload() => ref.read(dayWeatherProvider.notifier).fetchWeather(
           onError: (errorMessage) => showDialog<void>(
