@@ -9,7 +9,7 @@ part of 'day_weather_provider.dart';
 // **************************************************************************
 
 String _$dayWeatherRepositoryHash() =>
-    r'8cef640f03189a5e77b8457157ebcb8a6d456abb';
+    r'800513a880570ab92535b55a15a05511c13ef2e3';
 
 /// See also [dayWeatherRepository].
 @ProviderFor(dayWeatherRepository)
@@ -41,12 +41,12 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'8fb12cdcb292dc5f0a4df8673477b0764fbdb031';
+String _$dayWeatherHash() => r'15f84d841c3b0c8536e27e37e30846e481af1436';
 
 /// See also [DayWeather].
 @ProviderFor(DayWeather)
 final dayWeatherProvider =
-    AutoDisposeNotifierProvider<DayWeather, Weather?>.internal(
+    AutoDisposeAsyncNotifierProvider<DayWeather, Weather?>.internal(
   DayWeather.new,
   name: r'dayWeatherProvider',
   debugGetCreateSourceHash:
@@ -55,5 +55,5 @@ final dayWeatherProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$DayWeather = AutoDisposeNotifier<Weather?>;
+typedef _$DayWeather = AutoDisposeAsyncNotifier<Weather?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

@@ -15,7 +15,12 @@ class WeatherInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final weather = ref.watch(dayWeatherProvider);
+    final asyncWeather = ref.watch(dayWeatherProvider);
+    final weather = asyncWeather.maybeWhen(
+      data: (data) => data,
+      orElse: () => null,
+    );
+
     return Column(
       children: [
         AspectRatio(
