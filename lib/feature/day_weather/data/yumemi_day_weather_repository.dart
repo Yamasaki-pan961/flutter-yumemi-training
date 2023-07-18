@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/feature/day_weather/domain/repository/day_weather_repository.dart';
@@ -12,29 +13,34 @@ class YumemiDayWeatherRepository implements DayWeatherRepository {
   final YumemiWeather _yumemiWeather;
 
   @override
-  Result<Weather, String> fetch(String area, DateTime date) {
+  Future<Result<Weather, String>> fetch(String area, DateTime date) async {
     final payload = {'area': 'tokyo', 'date': date.toIso8601String()};
     final jsonPayload = jsonEncode(payload);
 
-    try {
-      final response = _yumemiWeather.fetchWeather(jsonPayload);
-      try {
-        final json = jsonDecode(response) as Map<String, dynamic>;
-        final weather = Weather.fromJson(json);
-        return Result.success(weather);
-      } on CheckedFromJsonException catch (error) {
-        SimpleLogger().info('\nFetched Response: $response');
-        SimpleLogger().shout(error);
-        return const Result.failure('不適切なデータを取得しました');
-      }
-    } on YumemiWeatherError catch (error) {
-      SimpleLogger().shout(error);
-      switch (error) {
-        case YumemiWeatherError.invalidParameter:
-          return const Result.failure('パラメータが間違っています');
-        case YumemiWeatherError.unknown:
-          return const Result.failure('不明なエラーが発生しました');
-      }
-    }
+    return compute(
+      (jsonPayload) {
+        try {
+          final response = _yumemiWeather.syncFetchWeather(jsonPayload);
+          try {
+            final json = jsonDecode(response) as Map<String, dynamic>;
+            final weather = Weather.fromJson(json);
+            return Result.success(weather);
+          } on CheckedFromJsonException catch (error) {
+            SimpleLogger().info('\nFetched Response: $response');
+            SimpleLogger().shout(error);
+            return const Result.failure('不適切なデータを取得しました');
+          }
+        } on YumemiWeatherError catch (error) {
+          SimpleLogger().shout(error);
+          switch (error) {
+            case YumemiWeatherError.invalidParameter:
+              return const Result.failure('パラメータが間違っています');
+            case YumemiWeatherError.unknown:
+              return const Result.failure('不明なエラーが発生しました');
+          }
+        }
+      },
+      jsonPayload,
+    );
   }
 }
