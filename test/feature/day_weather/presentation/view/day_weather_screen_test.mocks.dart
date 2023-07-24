@@ -3,8 +3,9 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter_training/common/domain/entities/weather.dart' as _i4;
-import 'package:flutter_training/common/utils/result.dart' as _i2;
+import 'dart:async' as _i4;
+
+import 'package:flutter_training/common/domain/entities/weather.dart' as _i2;
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart'
     as _i3;
 import 'package:mockito/mockito.dart' as _i1;
@@ -20,8 +21,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeResult_0<T, U> extends _i1.SmartFake implements _i2.Result<T, U> {
-  _FakeResult_0(
+class _FakeWeather_0 extends _i1.SmartFake implements _i2.Weather {
+  _FakeWeather_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -36,24 +37,24 @@ class _FakeResult_0<T, U> extends _i1.SmartFake implements _i2.Result<T, U> {
 class MockFetchDayWeatherUseCase extends _i1.Mock
     implements _i3.FetchDayWeatherUseCase {
   @override
-  _i2.Result<_i4.Weather, String> call() => (super.noSuchMethod(
+  _i4.Future<_i2.Weather> call() => (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
         ),
-        returnValue: _FakeResult_0<_i4.Weather, String>(
+        returnValue: _i4.Future<_i2.Weather>.value(_FakeWeather_0(
           this,
           Invocation.method(
             #call,
             [],
           ),
-        ),
-        returnValueForMissingStub: _FakeResult_0<_i4.Weather, String>(
+        )),
+        returnValueForMissingStub: _i4.Future<_i2.Weather>.value(_FakeWeather_0(
           this,
           Invocation.method(
             #call,
             [],
           ),
-        ),
-      ) as _i2.Result<_i4.Weather, String>);
+        )),
+      ) as _i4.Future<_i2.Weather>);
 }

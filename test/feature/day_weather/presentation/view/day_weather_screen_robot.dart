@@ -14,6 +14,7 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
   Finder get _reloadButton => find.byKey(DayWeatherScreen.reloadButtonKey);
   Finder get _dialog => find.byType(Dialog);
   WeatherInfoRobot get weatherInfo => WeatherInfoRobot.child(tester, this);
+  Finder get _loadingSpinner => find.byKey(DayWeatherScreen.loadingSpinnerKey);
 
   // Actions
   Future<void> showScreen({
@@ -35,7 +36,7 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
 
   Future<void> tapReloadButton() async {
     await tester.tap(_reloadButton);
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   // Expectation
@@ -44,6 +45,8 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
         find.descendant(of: _dialog, matching: find.text(message)),
         findsOneWidget,
       );
+  void expectLoadingSpinnerShown() => expect(_loadingSpinner, findsOneWidget);
+  void expectLoadingSpinnerNotShown() => expect(_loadingSpinner, findsNothing);
   void expectCloseButtonShown() => expect(_closeButton, findsOneWidget);
   void expectReloadButtonShown() => expect(_reloadButton, findsOneWidget);
 }

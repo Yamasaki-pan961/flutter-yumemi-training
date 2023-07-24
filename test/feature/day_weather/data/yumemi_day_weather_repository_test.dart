@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
-import 'package:flutter_training/common/utils/result.dart';
+import 'package:flutter_training/common/utils/api_call/dio_exception.dart';
 import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -50,13 +50,11 @@ void main() {
           // Assert
           expect(
             actual,
-            Result<Weather, String>.success(
-              Weather(
-                weatherCondition: WeatherCondition.cloudy,
-                maxTemperature: 9223372036854775807,
-                minTemperature: -9223372036854775808,
-                date: date,
-              ),
+            Weather(
+              weatherCondition: WeatherCondition.cloudy,
+              maxTemperature: 9223372036854775807,
+              minTemperature: -9223372036854775808,
+              date: date,
             ),
           );
         });
@@ -68,9 +66,7 @@ void main() {
             'fetch() return incorrect data error text value '
             'contained in Result.failure '
             'when YumemiWeather return the incorrect Json.', () {
-          const incorrectDataErrorText = '不適切なデータを取得しました';
-
-          test('When Out of int range', () async {
+          test('When Out of int range', () {
             // Arrange
             when(
               mockYumemiWeather.syncFetchWeather(any),
@@ -86,15 +82,15 @@ void main() {
             );
 
             // Act
-            final actual = await repository.fetch('', DateTime(2023));
+            final actual = repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
               actual,
-              const Result<Weather, String>.failure(incorrectDataErrorText),
+              throwsA(DioException.badResponse),
             );
           });
-          test('When unknown weather condition.', () async {
+          test('When unknown weather condition.', () {
             // Arrange
             when(
               mockYumemiWeather.syncFetchWeather(any),
@@ -111,16 +107,16 @@ void main() {
             );
 
             // Act
-            final actual = await repository.fetch('', DateTime(2023));
+            final actual = repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
               actual,
-              const Result<Weather, String>.failure(incorrectDataErrorText),
+              throwsA(DioException.badResponse),
             );
           });
 
-          test('When max temperature is string', () async {
+          test('When max temperature is string', () {
             // Arrange
             when(
               mockYumemiWeather.syncFetchWeather(any),
@@ -136,16 +132,16 @@ void main() {
             );
 
             // Act
-            final actual = await repository.fetch('', DateTime(2023));
+            final actual = repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
               actual,
-              const Result<Weather, String>.failure(incorrectDataErrorText),
+              throwsA(DioException.badResponse),
             );
           });
 
-          test('When the date is not formatted', () async {
+          test('When the date is not formatted', () {
             const dateTextNotFormatted = '2023-5-22';
             // Arrange
             when(
@@ -162,16 +158,16 @@ void main() {
             );
 
             // Act
-            final actual = await repository.fetch('', DateTime(2023));
+            final actual = repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
               actual,
-              const Result<Weather, String>.failure(incorrectDataErrorText),
+              throwsA(DioException.badResponse),
             );
           });
 
-          test('When missing a property', () async {
+          test('When missing a property', () {
             // Arrange
             when(
               mockYumemiWeather.syncFetchWeather(any),
@@ -186,12 +182,12 @@ void main() {
             );
 
             // Act
-            final actual = await repository.fetch('', DateTime(2023));
+            final actual = repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
               actual,
-              const Result<Weather, String>.failure('不適切なデータを取得しました'),
+              throwsA(DioException.badResponse),
             );
           });
         });
@@ -199,19 +195,18 @@ void main() {
             'fetch() return invalid parameter error text value '
             'contained in Result.failure '
             'when YumemiWeather return '
-            '"YumemiWeatherError.invalidParameter"', () async {
+            '"YumemiWeatherError.invalidParameter"', () {
           // Arrange
-          const invalidParameterText = 'パラメータが間違っています';
           when(mockYumemiWeather.syncFetchWeather(any))
               .thenThrow(YumemiWeatherError.invalidParameter);
 
           // Act
-          final actual = await repository.fetch('', date);
+          final actual = repository.fetch('', date);
 
           // Assert
           expect(
             actual,
-            const Result<Weather, String>.failure(invalidParameterText),
+            throwsA(DioException.badRequest),
           );
         });
 
@@ -219,20 +214,16 @@ void main() {
           'fetch() return unknown error text value '
           'contained in Result.failure '
           'when YumemiWeather return "YumemiWeatherError.unknown"',
-          () async {
+          () {
             // Arrange
-            const unknownError = '不明なエラーが発生しました';
             when(mockYumemiWeather.syncFetchWeather(any))
                 .thenThrow(YumemiWeatherError.unknown);
 
             // Act
-            final actual = await repository.fetch('', date);
+            final actual = repository.fetch('', date);
 
             // Assert
-            expect(
-              actual,
-              const Result<Weather, String>.failure(unknownError),
-            );
+            expect(actual, throwsA(DioException.unknown));
           },
         );
       });

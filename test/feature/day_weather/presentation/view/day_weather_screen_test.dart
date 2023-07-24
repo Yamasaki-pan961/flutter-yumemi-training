@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
-import 'package:flutter_training/common/utils/result.dart';
+import 'package:flutter_training/common/utils/api_call/dio_exception.dart';
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
 import 'package:flutter_training/feature/day_weather/presentation/presenter/day_weather_provider.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../utils_for_test/display_size.dart';
+import '../presenter/day_weather_provider_test.mocks.dart';
 import 'day_weather_screen_robot.dart';
-import 'day_weather_screen_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<FetchDayWeatherUseCase>(),
@@ -49,10 +51,9 @@ void main() async {
         testWidgets('sunny icon is displayed', (widgetTester) async {
           // Arrange
           final useCaseMock = MockFetchDayWeatherUseCase();
-          final result = Result<Weather, String>.success(
-            baseWeather.copyWith(weatherCondition: WeatherCondition.sunny),
-          );
-          when(useCaseMock()).thenReturn(result);
+          final weather =
+              baseWeather.copyWith(weatherCondition: WeatherCondition.sunny);
+          when(useCaseMock()).thenAnswer((_) async => weather);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -69,10 +70,9 @@ void main() async {
         testWidgets('cloudy icon is displayed', (widgetTester) async {
           // Arrange
           final useCaseMock = MockFetchDayWeatherUseCase();
-          final result = Result<Weather, String>.success(
-            baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy),
-          );
-          when(useCaseMock()).thenReturn(result);
+          final weather =
+              baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy);
+          when(useCaseMock()).thenAnswer((_) async => weather);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -90,10 +90,9 @@ void main() async {
         testWidgets('cloudy icon is displayed', (widgetTester) async {
           // Arrange
           final useCaseMock = MockFetchDayWeatherUseCase();
-          final result = Result<Weather, String>.success(
-            baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy),
-          );
-          when(useCaseMock()).thenReturn(result);
+          final weather =
+              baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy);
+          when(useCaseMock()).thenAnswer((_) async => weather);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -111,10 +110,9 @@ void main() async {
         testWidgets('rainy icon is displayed', (widgetTester) async {
           // Arrange
           final useCaseMock = MockFetchDayWeatherUseCase();
-          final result = Result<Weather, String>.success(
-            baseWeather.copyWith(weatherCondition: WeatherCondition.rainy),
-          );
-          when(useCaseMock()).thenReturn(result);
+          final weather =
+              baseWeather.copyWith(weatherCondition: WeatherCondition.rainy);
+          when(useCaseMock()).thenAnswer((_) async => weather);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -132,10 +130,10 @@ void main() async {
         testWidgets('temperature is displayed', (widgetTester) async {
           // Arrange
           final useCaseMock = MockFetchDayWeatherUseCase();
-          final result = Result<Weather, String>.success(
-            baseWeather.copyWith(maxTemperature: 31, minTemperature: -19),
-          );
-          when(useCaseMock()).thenReturn(result);
+          final fetchCompleter = Completer<Weather>();
+          final weather =
+              baseWeather.copyWith(maxTemperature: 31, minTemperature: -19);
+          when(useCaseMock()).thenAnswer((_) => fetchCompleter.future);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -146,7 +144,13 @@ void main() async {
           );
           await robot.tapReloadButton();
 
+          robot.expectLoadingSpinnerShown();
+
+          fetchCompleter.complete(weather);
+          await widgetTester.pump();
+
           // Expectation
+          robot.expectLoadingSpinnerNotShown();
           robot.weatherInfo
             ..maxTemperatureText.expectWithText('31 ℃')
             ..minTemperatureText.expectWithText('-19 ℃');
@@ -157,8 +161,8 @@ void main() async {
     testWidgets('when a fetching fails', (widgetTester) async {
       // Arrange
       final useCaseMock = MockFetchDayWeatherUseCase();
-      const result = Result<Weather, String>.failure('特定のエラーメッセージ');
-      when(useCaseMock()).thenReturn(result);
+      final fetchCompleter = Completer<DioException>();
+      when(useCaseMock()).thenThrow(DioException.badResponse);
       final robot = DayWeatherScreenRobot(widgetTester);
 
       // Action
@@ -168,9 +172,15 @@ void main() async {
         ],
       );
       await robot.tapReloadButton();
+      robot.expectLoadingSpinnerShown();
+
+      fetchCompleter.complete(DioException.badResponse);
+      await widgetTester.pump();
+      await null;
 
       // Expectation
-      robot.expectDialogShownWithMessage('特定のエラーメッセージ');
+      robot.expectLoadingSpinnerNotShown();
+      // robot.expectDialogShownWithMessage('不適切なデータを取得しました');
     });
   });
 }
