@@ -18,20 +18,14 @@ FetchDayWeatherUseCase fetchDayWeatherUseCase(FetchDayWeatherUseCaseRef ref) =>
 @riverpod
 class DayWeather extends _$DayWeather {
   @override
-  Future<Weather?> build() => Future.value();
+  Future<Weather?> build() async => null;
 
-  Future<void> fetchWeather({
-    void Function(String errorMessage)? onError,
-  }) async {
-    state = const AsyncLoading<Weather?>().copyWithPrevious(state);
-    state = AsyncData(
-      (await ref.read(fetchDayWeatherUseCaseProvider).call()).when(
-        success: (weather) => weather,
-        failure: (errorMessage) {
-          onError?.call(errorMessage);
-          return null;
-        },
-      ),
-    );
+  Future<void> fetchWeather() async {
+    if (state.isLoading) {
+      return;
+    }
+    state = const AsyncValue<Weather?>.loading().copyWithPrevious(state);
+    state = await AsyncValue.guard(
+        () async => await ref.read(fetchDayWeatherUseCaseProvider).call());
   }
 }

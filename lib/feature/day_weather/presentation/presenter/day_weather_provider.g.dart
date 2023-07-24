@@ -41,7 +41,7 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'15f84d841c3b0c8536e27e37e30846e481af1436';
+String _$dayWeatherHash() => r'babe49fb2b27be1c978f82a3d43d073cc0a0e203';
 
 /// See also [DayWeather].
 @ProviderFor(DayWeather)
