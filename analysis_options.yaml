@@ -2,6 +2,9 @@ include: package:blendthink_lints/recommended.yaml
 
 linter:
   rules:
+    exclude:
+      # 研修なのでエラーの扱い方に重点を置かない
+      - only_throw_errors
 
 analyzer:
   errors:
