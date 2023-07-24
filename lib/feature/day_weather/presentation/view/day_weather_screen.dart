@@ -15,12 +15,8 @@ class DayWeatherScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onClose() => Navigator.of(context).pop();
-    void onReload() => ref.read(dayWeatherProvider.notifier).fetchWeather(
-          onError: (errorMessage) => showDialog<void>(
-            context: context,
-            builder: (context) => _FetchErrorDialog(errorMessage: errorMessage),
-          ),
-        );
+    void onReload() =>
+        ref.read(dayWeatherApiCallStateProvider.notifier).fetch();
 
     return Scaffold(
       body: Center(

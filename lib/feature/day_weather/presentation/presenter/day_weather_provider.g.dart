@@ -9,7 +9,7 @@ part of 'day_weather_provider.dart';
 // **************************************************************************
 
 String _$dayWeatherRepositoryHash() =>
-    r'8cef640f03189a5e77b8457157ebcb8a6d456abb';
+    r'800513a880570ab92535b55a15a05511c13ef2e3';
 
 /// See also [dayWeatherRepository].
 @ProviderFor(dayWeatherRepository)
@@ -41,13 +41,12 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'8fb12cdcb292dc5f0a4df8673477b0764fbdb031';
+String _$dayWeatherHash() => r'7630799c04c29b01a06950a62a99daadbae6effd';
 
-/// See also [DayWeather].
-@ProviderFor(DayWeather)
-final dayWeatherProvider =
-    AutoDisposeNotifierProvider<DayWeather, Weather?>.internal(
-  DayWeather.new,
+/// See also [dayWeather].
+@ProviderFor(dayWeather)
+final dayWeatherProvider = AutoDisposeProvider<Weather?>.internal(
+  dayWeather,
   name: r'dayWeatherProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$dayWeatherHash,
@@ -55,5 +54,23 @@ final dayWeatherProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$DayWeather = AutoDisposeNotifier<Weather?>;
+typedef DayWeatherRef = AutoDisposeProviderRef<Weather?>;
+String _$dayWeatherApiCallStateHash() =>
+    r'167ab5655e95b243c772356df5828d221428bdf4';
+
+/// See also [DayWeatherApiCallState].
+@ProviderFor(DayWeatherApiCallState)
+final dayWeatherApiCallStateProvider = AutoDisposeNotifierProvider<
+    DayWeatherApiCallState, ApiCallStatus<Result<Weather, String>>>.internal(
+  DayWeatherApiCallState.new,
+  name: r'dayWeatherApiCallStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dayWeatherApiCallStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DayWeatherApiCallState
+    = AutoDisposeNotifier<ApiCallStatus<Result<Weather, String>>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
