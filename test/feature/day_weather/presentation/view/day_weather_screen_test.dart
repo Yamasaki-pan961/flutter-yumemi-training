@@ -30,7 +30,8 @@ void main() async {
     robot
       ..expectCloseButtonShown()
       ..expectReloadButtonShown()
-      ..expectErrorDialogNotShown();
+      ..expectErrorDialogNotShown()
+      ..expectLoadingDialogNotShown();
 
     robot.weatherInfo.expectShown();
     robot.weatherInfo.maxTemperatureText.expectWithText('** ℃');
