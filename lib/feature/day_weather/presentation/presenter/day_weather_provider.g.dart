@@ -41,7 +41,7 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'7630799c04c29b01a06950a62a99daadbae6effd';
+String _$dayWeatherHash() => r'c9bd0b96015abbd03a86791fa7b005990a819e73';
 
 /// See also [dayWeather].
 @ProviderFor(dayWeather)
@@ -56,7 +56,7 @@ final dayWeatherProvider = AutoDisposeProvider<Weather?>.internal(
 
 typedef DayWeatherRef = AutoDisposeProviderRef<Weather?>;
 String _$dayWeatherApiCallStateHash() =>
-    r'167ab5655e95b243c772356df5828d221428bdf4';
+    r'db8ad8bad08204c77bdf569857fa1d752c769925';
 
 /// See also [DayWeatherApiCallState].
 @ProviderFor(DayWeatherApiCallState)

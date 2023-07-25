@@ -23,25 +23,19 @@ class DayWeatherApiCallState extends _$DayWeatherApiCallState {
   ApiCallStatus<Result<Weather, String>> build() =>
       const ApiCallStatus.notLoaded();
 
-  Future<void> fetch() async {
-    state = ApiCallStatus.loading(
-      state.maybeWhen(
-        orElse: () => null,
-        loaded: (result) => result,
-      ),
-    );
+  Future<void> fetchWeather() async {
+    if (state.isLoading) {
+      return;
+    }
+    state = ApiCallStatus.loading(state.asValue);
     state = ApiCallStatus.loaded(
-      ref.read(fetchDayWeatherUseCaseProvider).call(),
+      await ref.read(fetchDayWeatherUseCaseProvider).call(),
     );
   }
 }
 
 @riverpod
 Weather? dayWeather(DayWeatherRef ref) =>
-    ref.watch(dayWeatherApiCallStateProvider).maybeWhen(
-          orElse: () => null,
-          loaded: (result) => result.maybeWhen(
-            success: (weather) => weather,
-            orElse: () => null,
-          ),
+    ref.watch(dayWeatherApiCallStateProvider).asValue?.whenOrNull(
+          success: (weather) => weather,
         );
