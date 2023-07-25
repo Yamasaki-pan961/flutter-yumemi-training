@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/utils/result.dart';
@@ -28,7 +30,7 @@ void main() async {
     robot
       ..expectCloseButtonShown()
       ..expectReloadButtonShown()
-      ..expectDialogNotShown();
+      ..expectErrorDialogNotShown();
 
     robot.weatherInfo.expectShown();
     robot.weatherInfo.maxTemperatureText.expectWithText('** ℃');
@@ -46,13 +48,15 @@ void main() async {
           minTemperature: 0,
           date: DateTime(2023),
         );
-        testWidgets('sunny icon is displayed', (widgetTester) async {
+        testWidgets('sunny icon is displayed  and LoadingDialog is not shown',
+            (widgetTester) async {
           // Arrange
+          final fetchCompleter = Completer<Result<Weather, String>>();
           final useCaseMock = MockFetchDayWeatherUseCase();
           final result = Result<Weather, String>.success(
             baseWeather.copyWith(weatherCondition: WeatherCondition.sunny),
           );
-          when(useCaseMock()).thenReturn(result);
+          when(useCaseMock()).thenAnswer((_) => fetchCompleter.future);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -63,6 +67,12 @@ void main() async {
           );
           await robot.tapReloadButton();
 
+          // Check LoadingDialog shown
+          robot.expectLoadingDialogShown();
+
+          fetchCompleter.complete(result);
+          await widgetTester.pump();
+
           // Expectation
           robot.weatherInfo.weatherIcon.expectSunnyIconToBeShown();
         });
@@ -72,7 +82,7 @@ void main() async {
           final result = Result<Weather, String>.success(
             baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy),
           );
-          when(useCaseMock()).thenReturn(result);
+          when(useCaseMock()).thenAnswer((_) async => result);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -93,7 +103,7 @@ void main() async {
           final result = Result<Weather, String>.success(
             baseWeather.copyWith(weatherCondition: WeatherCondition.cloudy),
           );
-          when(useCaseMock()).thenReturn(result);
+          when(useCaseMock()).thenAnswer((_) async => result);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -114,7 +124,7 @@ void main() async {
           final result = Result<Weather, String>.success(
             baseWeather.copyWith(weatherCondition: WeatherCondition.rainy),
           );
-          when(useCaseMock()).thenReturn(result);
+          when(useCaseMock()).thenAnswer((_) async => result);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -135,7 +145,7 @@ void main() async {
           final result = Result<Weather, String>.success(
             baseWeather.copyWith(maxTemperature: 31, minTemperature: -19),
           );
-          when(useCaseMock()).thenReturn(result);
+          when(useCaseMock()).thenAnswer((_) async => result);
           final robot = DayWeatherScreenRobot(widgetTester);
 
           // Action
@@ -154,11 +164,15 @@ void main() async {
       },
     );
 
-    testWidgets('when a fetching fails', (widgetTester) async {
+    testWidgets(
+        'when a fetching fails, '
+        'ErrorDialog is displayed and LoadingDialog is not shown',
+        (widgetTester) async {
       // Arrange
       final useCaseMock = MockFetchDayWeatherUseCase();
+      final fetchCompleter = Completer<Result<Weather, String>>();
       const result = Result<Weather, String>.failure('特定のエラーメッセージ');
-      when(useCaseMock()).thenReturn(result);
+      when(useCaseMock()).thenAnswer((_) => fetchCompleter.future);
       final robot = DayWeatherScreenRobot(widgetTester);
 
       // Action
@@ -168,9 +182,16 @@ void main() async {
         ],
       );
       await robot.tapReloadButton();
+      // Check LoadingDialogShown
+      robot.expectLoadingDialogShown();
+
+      fetchCompleter.complete(result);
+      await widgetTester.pump();
 
       // Expectation
-      robot.expectDialogShownWithMessage('特定のエラーメッセージ');
+      robot
+        ..expectLoadingDialogNotShown()
+        ..expectErrorDialogShownWithMessage('特定のエラーメッセージ');
     });
   });
 }
