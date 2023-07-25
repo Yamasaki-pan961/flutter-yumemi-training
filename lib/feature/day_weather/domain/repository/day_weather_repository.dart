@@ -8,5 +8,5 @@ abstract class DayWeatherRepository {
   /// object representing either a success value of type
   /// [Weather] or a failure value of type [String]
   /// for a display text.
-  Result<Weather, String> fetch(String area, DateTime date);
+  Future<Result<Weather, String>> fetch(String area, DateTime date);
 }
