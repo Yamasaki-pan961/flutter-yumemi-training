@@ -1,7 +1,7 @@
 ## DayWeatherのProviderの依存関係
 
 ```mermaid
-flowchart BT
+flowchart TB
   subgraph Arrows
     direction LR
     start1[ ] -..->|read| stop1[ ]
@@ -20,13 +20,18 @@ flowchart BT
     ConsumerWidget((widget));
     Provider[[provider]];
   end
+  DayWeatherScreen((DayWeatherScreen));
+  dayWeatherApiCallStateProvider --> DayWeatherScreen;
+  dayWeatherApiCallStateProvider -.-> DayWeatherScreen;
+  WeatherInfo((WeatherInfo));
+  dayWeatherProvider ==> WeatherInfo;
+  fetchDayWeatherUseCaseProvider[[fetchDayWeatherUseCaseProvider]];
+  dayWeatherRepositoryProvider ==> fetchDayWeatherUseCaseProvider;
+  dayWeatherRepositoryProvider[[dayWeatherRepositoryProvider]];
+  dayWeatherProvider[[dayWeatherProvider]];
+  dayWeatherApiCallStateProvider ==> dayWeatherProvider;
+  dayWeatherApiCallStateProvider[[dayWeatherApiCallStateProvider]];
 
-
-  dayWeatherProvider[[DayWeatherProvider]] .-> fetchDayWeatherUseCaseProvider[[FetchDayWeatherUseCaseProvider]]
-  fetchDayWeatherUseCaseProvider ==>  repository[[dayWeatherRepositoryProvider]]
-
-  screen((DayWeatherScreen)) .-> dayWeatherProvider
-  info((WeatherInfo)) ==> dayWeatherProvider
 
 
 ```
