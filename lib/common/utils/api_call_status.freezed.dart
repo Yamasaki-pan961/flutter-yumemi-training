@@ -98,8 +98,8 @@ class __$$NotLoadedCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$NotLoaded<T> implements NotLoaded<T> {
-  const _$NotLoaded();
+class _$NotLoaded<T> extends NotLoaded<T> {
+  const _$NotLoaded() : super._();
 
   @override
   String toString() {
@@ -184,8 +184,9 @@ class _$NotLoaded<T> implements NotLoaded<T> {
   }
 }
 
-abstract class NotLoaded<T> implements ApiCallStatus<T> {
+abstract class NotLoaded<T> extends ApiCallStatus<T> {
   const factory NotLoaded() = _$NotLoaded<T>;
+  const NotLoaded._() : super._();
 }
 
 /// @nodoc
@@ -221,8 +222,8 @@ class __$$LoadingCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$Loading<T> implements Loading<T> {
-  const _$Loading(this.previous);
+class _$Loading<T> extends Loading<T> {
+  const _$Loading(this.previous) : super._();
 
   @override
   final T? previous;
@@ -319,8 +320,9 @@ class _$Loading<T> implements Loading<T> {
   }
 }
 
-abstract class Loading<T> implements ApiCallStatus<T> {
+abstract class Loading<T> extends ApiCallStatus<T> {
   const factory Loading(final T? previous) = _$Loading<T>;
+  const Loading._() : super._();
 
   T? get previous;
   @JsonKey(ignore: true)
@@ -360,8 +362,8 @@ class __$$LoadedCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$Loaded<T> implements Loaded<T> {
-  const _$Loaded(this.result);
+class _$Loaded<T> extends Loaded<T> {
+  const _$Loaded(this.result) : super._();
 
   @override
   final T result;
@@ -458,8 +460,9 @@ class _$Loaded<T> implements Loaded<T> {
   }
 }
 
-abstract class Loaded<T> implements ApiCallStatus<T> {
+abstract class Loaded<T> extends ApiCallStatus<T> {
   const factory Loaded(final T result) = _$Loaded<T>;
+  const Loaded._() : super._();
 
   T get result;
   @JsonKey(ignore: true)
