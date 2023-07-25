@@ -35,7 +35,7 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
 
   Future<void> tapReloadButton() async {
     await tester.tap(_reloadButton);
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   // Expectation
