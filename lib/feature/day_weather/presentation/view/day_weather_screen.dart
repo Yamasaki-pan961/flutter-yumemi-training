@@ -18,8 +18,8 @@ class DayWeatherScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(dayWeatherApiCallStateProvider, (_, current) {
-      current.maybeWhen(
-        orElse: () {},
+      current.when(
+        notLoaded: () {},
         loading: (_) => showDialog<void>(
           barrierDismissible: false,
           context: context,
