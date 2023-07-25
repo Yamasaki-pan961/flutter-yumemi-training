@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
+import 'package:flutter_training/common/utils/api_call_status.dart';
 import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
 import 'package:flutter_training/feature/day_weather/presentation/presenter/day_weather_provider.dart';
@@ -35,14 +36,14 @@ class RiverpodTestTools {
         ) {
     addTearDown(container.dispose);
 
-    container.listen<Weather?>(
-      dayWeatherProvider,
+    container.listen<ApiCallStatus<Result<Weather, String>>>(
+      dayWeatherApiCallStateProvider,
       listener,
     );
   }
 
   final ProviderContainer container;
-  final listener = Listener<Weather?>();
+  final listener = Listener<ApiCallStatus<Result<Weather, String>>>();
 }
 
 @GenerateNiceMocks([
@@ -51,7 +52,7 @@ class RiverpodTestTools {
 void main() {
   group(
     'Test the number of calls to '
-    'dayWeatherProvider.fetchWeather() and use case',
+    'dayWeatherApiCallStateProvider.fetchWeather() and use case',
     () {
       // Arrange
       final resultForMatcher = Result<Weather, String>.success(
@@ -63,7 +64,7 @@ void main() {
         ),
       );
       final useCaseMock = MockFetchDayWeatherUseCase();
-      when(useCaseMock.call()).thenReturn(resultForMatcher);
+      when(useCaseMock.call()).thenAnswer((_) async => resultForMatcher);
 
       test('0 calls to use case when 0 calls to fetchWeather()', () {
         // Arrange
@@ -80,12 +81,12 @@ void main() {
 
       test(
         '1 calls to use case when 1 calls to fetchWeather()',
-        () {
+        () async {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
 
           // Act
-          riverpodTestTool.container
+          await riverpodTestTool.container
               .read(dayWeatherProvider.notifier)
               .fetchWeather();
 
@@ -96,16 +97,16 @@ void main() {
 
       test(
         '2 calls to use case when 2 calls to fetchWeather()',
-        () {
+        () async {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
 
           // Act
-          riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+          await riverpodTestTool.container
+              .read(dayWeatherApiCallStateProvider.notifier)
               .fetchWeather();
-          riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+          await riverpodTestTool.container
+              .read(dayWeatherApiCallStateProvider.notifier)
               .fetchWeather();
 
           // Assert
