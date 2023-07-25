@@ -32,7 +32,7 @@ void main() {
             'when YumemiWeather return the correct Json.', () async {
           // Arrange
           when(
-            mockYumemiWeather.fetchWeather(any),
+            mockYumemiWeather.syncFetchWeather(any),
           ).thenReturn(
             '''
 {
@@ -73,7 +73,7 @@ void main() {
           test('When Out of int range', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -97,7 +97,7 @@ void main() {
           test('When unknown weather condition.', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               // "arrow" is unknown weather condition
               '''
@@ -123,7 +123,7 @@ void main() {
           test('When max temperature is string', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -149,7 +149,7 @@ void main() {
             const dateTextNotFormatted = '2023-5-22';
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -174,7 +174,7 @@ void main() {
           test('When missing a property', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -202,7 +202,7 @@ void main() {
             '"YumemiWeatherError.invalidParameter"', () async {
           // Arrange
           const invalidParameterText = 'パラメータが間違っています';
-          when(mockYumemiWeather.fetchWeather(any))
+          when(mockYumemiWeather.syncFetchWeather(any))
               .thenThrow(YumemiWeatherError.invalidParameter);
 
           // Act
@@ -222,7 +222,7 @@ void main() {
           () async {
             // Arrange
             const unknownError = '不明なエラーが発生しました';
-            when(mockYumemiWeather.fetchWeather(any))
+            when(mockYumemiWeather.syncFetchWeather(any))
                 .thenThrow(YumemiWeatherError.unknown);
 
             // Act

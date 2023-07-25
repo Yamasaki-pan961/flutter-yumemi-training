@@ -18,7 +18,7 @@ class YumemiDayWeatherRepository implements DayWeatherRepository {
           final payload = {'area': 'tokyo', 'date': date.toIso8601String()};
           final jsonPayload = jsonEncode(payload);
           try {
-            final response = _yumemiWeather.fetchWeather(jsonPayload);
+            final response = _yumemiWeather.syncFetchWeather(jsonPayload);
             try {
               final json = jsonDecode(response) as Map<String, dynamic>;
               final weather = Weather.fromJson(json);
