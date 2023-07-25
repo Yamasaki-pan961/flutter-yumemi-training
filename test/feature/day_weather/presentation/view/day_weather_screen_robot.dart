@@ -13,6 +13,7 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
   Finder get _closeButton => find.byKey(DayWeatherScreen.closeButtonKey);
   Finder get _reloadButton => find.byKey(DayWeatherScreen.reloadButtonKey);
   Finder get _dialog => find.byType(Dialog);
+  Finder get _loadingDialog => find.byKey(DayWeatherScreen.loadingDialogKey);
   WeatherInfoRobot get weatherInfo => WeatherInfoRobot.child(tester, this);
 
   // Actions
@@ -39,11 +40,13 @@ class DayWeatherScreenRobot extends Robot<DayWeatherScreen> {
   }
 
   // Expectation
-  void expectDialogNotShown() => expect(_dialog, findsNothing);
-  void expectDialogShownWithMessage(String message) => expect(
+  void expectErrorDialogNotShown() => expect(_dialog, findsNothing);
+  void expectErrorDialogShownWithMessage(String message) => expect(
         find.descendant(of: _dialog, matching: find.text(message)),
         findsOneWidget,
       );
+  void expectLoadingDialogShown() => expect(_loadingDialog, findsOneWidget);
+  void expectLoadingDialogNotShown() => expect(_loadingDialog, findsNothing);
   void expectCloseButtonShown() => expect(_closeButton, findsOneWidget);
   void expectReloadButtonShown() => expect(_reloadButton, findsOneWidget);
 }
