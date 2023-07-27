@@ -29,8 +29,7 @@ class DayWeatherScreen extends ConsumerWidget {
         ),
         loaded: (result) {
           Navigator.of(context).pop();
-          result.maybeWhen(
-            orElse: () {},
+          result.whenOrNull(
             failure: (errorMessage) => showDialog<void>(
               context: context,
               builder: (context) =>
