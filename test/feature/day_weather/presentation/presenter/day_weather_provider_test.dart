@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
+import 'package:flutter_training/common/utils/api_call_status.dart';
 import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
 import 'package:flutter_training/feature/day_weather/presentation/presenter/day_weather_provider.dart';
@@ -13,36 +16,25 @@ class Listener<T> extends Mock {
   void call(T? previous, T value);
 }
 
-class TestDayWetherNotifier extends DayWeather {
-  TestDayWetherNotifier(this._initialValue);
-
-  final Weather? _initialValue;
-  @override
-  Weather? build() => _initialValue;
-}
-
 /// Initialize and hold Riverpod containers and listeners
 class RiverpodTestTools {
   RiverpodTestTools({
     required FetchDayWeatherUseCase useCaseMock,
-    Weather? initialWeather,
   }) : container = ProviderContainer(
           overrides: [
             fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
-            dayWeatherProvider
-                .overrideWith(() => TestDayWetherNotifier(initialWeather))
           ],
         ) {
     addTearDown(container.dispose);
 
-    container.listen<Weather?>(
-      dayWeatherProvider,
+    container.listen<ApiCallStatus<Result<Weather, String>>>(
+      dayWeatherApiCallStateProvider,
       listener,
     );
   }
 
   final ProviderContainer container;
-  final listener = Listener<Weather?>();
+  final listener = Listener<ApiCallStatus<Result<Weather, String>>>();
 }
 
 @GenerateNiceMocks([
@@ -51,7 +43,7 @@ class RiverpodTestTools {
 void main() {
   group(
     'Test the number of calls to '
-    'dayWeatherProvider.fetchWeather() and use case',
+    'dayWeatherApiCallStateProvider.fetchWeather() and use case',
     () {
       // Arrange
       final resultForMatcher = Result<Weather, String>.success(
@@ -63,7 +55,7 @@ void main() {
         ),
       );
       final useCaseMock = MockFetchDayWeatherUseCase();
-      when(useCaseMock.call()).thenReturn(resultForMatcher);
+      when(useCaseMock.call()).thenAnswer((_) async => resultForMatcher);
 
       test('0 calls to use case when 0 calls to fetchWeather()', () {
         // Arrange
@@ -80,13 +72,13 @@ void main() {
 
       test(
         '1 calls to use case when 1 calls to fetchWeather()',
-        () {
+        () async {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
 
           // Act
-          riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+          await riverpodTestTool.container
+              .read(dayWeatherApiCallStateProvider.notifier)
               .fetchWeather();
 
           // Assert
@@ -96,16 +88,16 @@ void main() {
 
       test(
         '2 calls to use case when 2 calls to fetchWeather()',
-        () {
+        () async {
           // Arrange
           final riverpodTestTool = RiverpodTestTools(useCaseMock: useCaseMock);
 
           // Act
-          riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+          await riverpodTestTool.container
+              .read(dayWeatherApiCallStateProvider.notifier)
               .fetchWeather();
-          riverpodTestTool.container
-              .read(dayWeatherProvider.notifier)
+          await riverpodTestTool.container
+              .read(dayWeatherApiCallStateProvider.notifier)
               .fetchWeather();
 
           // Assert
@@ -115,9 +107,77 @@ void main() {
     },
   );
 
+  group('Test dayWeatherApiCallState', () {
+    final useCaseMock = MockFetchDayWeatherUseCase();
+    final weather = Weather(
+      weatherCondition: WeatherCondition.rainy,
+      maxTemperature: 20,
+      minTemperature: 10,
+      date: DateTime(2023),
+    );
+    test(
+        'When fetchWeather() returns success after, '
+        'the state changes in order '
+        'notLoaded to loading to loaded', () async {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
+      final successResult = Result<Weather, String>.success(weather);
+      when(useCaseMock.call()).thenAnswer((_) async => successResult);
+
+      // Action
+      await riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
+          .fetchWeather();
+
+      // Expectation
+      verifyInOrder([
+        riverpodTestTools.listener(
+          const ApiCallStatus.notLoaded(),
+          const ApiCallStatus.loading(null),
+        ),
+        riverpodTestTools.listener(
+          any,
+          ApiCallStatus<Result<Weather, String>>.loaded(successResult),
+        ),
+      ]);
+    });
+    test(
+        'When fetchWeather() returns failure after, '
+        'the state changes in order '
+        'notLoaded to loading to loaded', () async {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
+      const failureResult = Result<Weather, String>.failure('');
+      when(useCaseMock.call()).thenAnswer((_) async => failureResult);
+
+      // Action
+      await riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
+          .fetchWeather();
+
+      // Expectation
+      verifyInOrder([
+        riverpodTestTools.listener(
+          const ApiCallStatus.notLoaded(),
+          const ApiCallStatus.loading(null),
+        ),
+        riverpodTestTools.listener(
+          any,
+          const ApiCallStatus<Result<Weather, String>>.loaded(failureResult),
+        ),
+      ]);
+    });
+  });
+
   group('Test dayWeatherProvider state', () {
     // Arrange
     final useCaseMock = MockFetchDayWeatherUseCase();
+    final weather = Weather(
+      weatherCondition: WeatherCondition.rainy,
+      maxTemperature: 20,
+      minTemperature: 10,
+      date: DateTime(2023),
+    );
     test('Default state is null', () {
       // Arrange
       final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
@@ -131,55 +191,95 @@ void main() {
 
     test(
         'The first time fetchWeather() returns success, '
-        'the state changes from null to Weather', () {
+        'the state is Weather', () async {
       // Arrange
       final riverpodTestTools = RiverpodTestTools(useCaseMock: useCaseMock);
-      final weather = Weather(
-        weatherCondition: WeatherCondition.rainy,
-        maxTemperature: 20,
-        minTemperature: 10,
-        date: DateTime(2023),
-      );
-      final result = Result<Weather, String>.success(
-        weather,
-      );
-      when(useCaseMock.call()).thenReturn(result);
+
+      final result = Result<Weather, String>.success(weather);
+      when(useCaseMock.call()).thenAnswer((_) async => result);
 
       // Act
-      riverpodTestTools.container
-          .read(dayWeatherProvider.notifier)
+      await riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
           .fetchWeather();
 
+      final actual = riverpodTestTools.container.read(dayWeatherProvider);
+
       // Assert
-      verify(riverpodTestTools.listener(null, weather)).called(1);
+      expect(actual, weather);
     });
 
     test(
-        'When fetchWeather() returns failure,'
-        ' state changes from Weather to null', () {
+        'When fetchWeather() returns failure, '
+        'state is null', () async {
       // Arrange
-      final weather = Weather(
-        weatherCondition: WeatherCondition.rainy,
-        maxTemperature: 20,
-        minTemperature: 10,
-        date: DateTime(2023),
-      );
 
       final riverpodTestTools = RiverpodTestTools(
         useCaseMock: useCaseMock,
-        initialWeather: weather,
       );
 
       const resultFailure = Result<Weather, String>.failure('');
-      when(useCaseMock.call()).thenReturn(resultFailure);
+      when(useCaseMock.call()).thenAnswer((_) async => resultFailure);
 
       // Act
-      riverpodTestTools.container
-          .read(dayWeatherProvider.notifier)
+      await riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
           .fetchWeather();
 
+      final actual = riverpodTestTools.container.read(dayWeatherProvider);
+
       // Assert
-      verify(riverpodTestTools.listener(weather, null)).called(1);
+      expect(actual, null);
+    });
+
+    test('State retains previous value during loading', () async {
+      // Arrange
+      final riverpodTestTools = RiverpodTestTools(
+        useCaseMock: useCaseMock,
+      );
+      final fetchCompleter = Completer<Result<Weather, String>>();
+
+      // 初期値を変更
+      final resultSuccess = Result<Weather, String>.success(weather);
+      when(useCaseMock.call()).thenAnswer((_) async => resultSuccess);
+      await riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
+          .fetchWeather();
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .valueOrNull,
+        resultSuccess,
+      );
+
+      // ローディング状態に変更
+      when(useCaseMock.call()).thenAnswer((_) => fetchCompleter.future);
+      final futureResult = riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
+          .fetchWeather();
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .isLoading,
+        isTrue,
+      );
+
+      // Act
+      final actual = riverpodTestTools.container.read(dayWeatherProvider);
+
+      fetchCompleter.complete(resultSuccess);
+      await futureResult;
+
+      // 念の為、ローディングが完了しているかを確認
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .isLoading,
+        isFalse,
+      );
+
+      // Assert
+      expect(actual, weather);
     });
   });
 }

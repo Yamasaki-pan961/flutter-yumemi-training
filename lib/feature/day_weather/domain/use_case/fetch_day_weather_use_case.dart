@@ -6,7 +6,7 @@ class FetchDayWeatherUseCase {
   const FetchDayWeatherUseCase(this._repository);
   final DayWeatherRepository _repository;
 
-  Result<Weather, String> call() {
+  Future<Result<Weather, String>> call() {
     const area = 'tokyo';
     final date = DateTime.now();
     return _repository.fetch(area, date);

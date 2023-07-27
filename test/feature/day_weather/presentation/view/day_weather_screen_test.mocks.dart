@@ -3,7 +3,9 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter_training/common/domain/entities/weather.dart' as _i4;
+import 'dart:async' as _i4;
+
+import 'package:flutter_training/common/domain/entities/weather.dart' as _i5;
 import 'package:flutter_training/common/utils/result.dart' as _i2;
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart'
     as _i3;
@@ -36,24 +38,27 @@ class _FakeResult_0<T, U> extends _i1.SmartFake implements _i2.Result<T, U> {
 class MockFetchDayWeatherUseCase extends _i1.Mock
     implements _i3.FetchDayWeatherUseCase {
   @override
-  _i2.Result<_i4.Weather, String> call() => (super.noSuchMethod(
+  _i4.Future<_i2.Result<_i5.Weather, String>> call() => (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
         ),
-        returnValue: _FakeResult_0<_i4.Weather, String>(
+        returnValue: _i4.Future<_i2.Result<_i5.Weather, String>>.value(
+            _FakeResult_0<_i5.Weather, String>(
           this,
           Invocation.method(
             #call,
             [],
           ),
-        ),
-        returnValueForMissingStub: _FakeResult_0<_i4.Weather, String>(
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.Result<_i5.Weather, String>>.value(
+                _FakeResult_0<_i5.Weather, String>(
           this,
           Invocation.method(
             #call,
             [],
           ),
-        ),
-      ) as _i2.Result<_i4.Weather, String>);
+        )),
+      ) as _i4.Future<_i2.Result<_i5.Weather, String>>);
 }

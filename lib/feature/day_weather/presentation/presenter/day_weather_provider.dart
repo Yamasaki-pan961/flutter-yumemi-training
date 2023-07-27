@@ -1,4 +1,6 @@
 import 'package:flutter_training/common/domain/entities/weather.dart';
+import 'package:flutter_training/common/utils/api_call_status.dart';
+import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/feature/day_weather/data/yumemi_day_weather_repository.dart';
 import 'package:flutter_training/feature/day_weather/domain/repository/day_weather_repository.dart';
 import 'package:flutter_training/feature/day_weather/domain/use_case/fetch_day_weather_use_case.dart';
@@ -16,17 +18,24 @@ FetchDayWeatherUseCase fetchDayWeatherUseCase(FetchDayWeatherUseCaseRef ref) =>
     FetchDayWeatherUseCase(ref.watch(dayWeatherRepositoryProvider));
 
 @riverpod
-class DayWeather extends _$DayWeather {
+class DayWeatherApiCallState extends _$DayWeatherApiCallState {
   @override
-  Weather? build() => null;
+  ApiCallStatus<Result<Weather, String>> build() =>
+      const ApiCallStatus.notLoaded();
 
-  void fetchWeather({void Function(String errorMessage)? onError}) {
-    ref.read(fetchDayWeatherUseCaseProvider).call().when(
-          success: (weather) => state = weather,
-          failure: (errorMessage) {
-            state = null;
-            onError?.call(errorMessage);
-          },
-        );
+  Future<void> fetchWeather() async {
+    if (state.isLoading) {
+      return;
+    }
+    state = ApiCallStatus.loading(state.valueOrNull);
+    state = ApiCallStatus.loaded(
+      await ref.read(fetchDayWeatherUseCaseProvider).call(),
+    );
   }
 }
+
+@riverpod
+Weather? dayWeather(DayWeatherRef ref) =>
+    ref.watch(dayWeatherApiCallStateProvider).valueOrNull?.whenOrNull(
+          success: (weather) => weather,
+        );

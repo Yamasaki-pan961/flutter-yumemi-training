@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_training/common/domain/entities/weather.dart';
 import 'package:flutter_training/common/utils/result.dart';
 import 'package:flutter_training/feature/day_weather/domain/repository/day_weather_repository.dart';
@@ -12,15 +13,24 @@ class YumemiDayWeatherRepository implements DayWeatherRepository {
   final YumemiWeather _yumemiWeather;
 
   @override
-  Result<Weather, String> fetch(String area, DateTime date) {
-    final payload = {'area': 'tokyo', 'date': date.toIso8601String()};
-    final jsonPayload = jsonEncode(payload);
-
+  Future<Result<Weather, String>> fetch(String area, DateTime date) async {
     try {
-      final response = _yumemiWeather.fetchWeather(jsonPayload);
+      final response = await compute(
+        (_) {
+          final payload = {'area': 'tokyo', 'date': date.toIso8601String()};
+          final jsonPayload = jsonEncode(payload);
+          return _yumemiWeather.syncFetchWeather(jsonPayload);
+        },
+        null,
+      );
       try {
-        final json = jsonDecode(response) as Map<String, dynamic>;
-        final weather = Weather.fromJson(json);
+        final weather = await compute(
+          (_) {
+            final json = jsonDecode(response) as Map<String, dynamic>;
+            return Weather.fromJson(json);
+          },
+          null,
+        );
         return Result.success(weather);
       } on CheckedFromJsonException catch (error) {
         SimpleLogger().info('\nFetched Response: $response');

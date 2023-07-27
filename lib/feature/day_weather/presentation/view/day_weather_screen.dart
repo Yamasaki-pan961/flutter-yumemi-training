@@ -12,15 +12,35 @@ class DayWeatherScreen extends ConsumerWidget {
   @visibleForTesting
   static final closeButtonKey = UniqueKey();
 
+  @visibleForTesting
+  static final loadingDialogKey = UniqueKey();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onClose() => Navigator.of(context).pop();
-    void onReload() => ref.read(dayWeatherProvider.notifier).fetchWeather(
-          onError: (errorMessage) => showDialog<void>(
-            context: context,
-            builder: (context) => _FetchErrorDialog(errorMessage: errorMessage),
+    ref.listen(dayWeatherApiCallStateProvider, (_, current) {
+      current.whenOrNull(
+        loading: (_) => showDialog<void>(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => _LoadingDialog(
+            key: loadingDialogKey,
           ),
-        );
+        ),
+        loaded: (result) {
+          Navigator.of(context).pop();
+          result.whenOrNull(
+            failure: (errorMessage) => showDialog<void>(
+              context: context,
+              builder: (context) =>
+                  _FetchErrorDialog(errorMessage: errorMessage),
+            ),
+          );
+        },
+      );
+    });
+    void onClose() => Navigator.of(context).pop();
+    void onReload() =>
+        ref.read(dayWeatherApiCallStateProvider.notifier).fetchWeather();
 
     return Scaffold(
       body: Center(
@@ -81,6 +101,17 @@ class _FetchErrorDialog extends StatelessWidget {
           child: const Text('OK'),
         )
       ],
+    );
+  }
+}
+
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

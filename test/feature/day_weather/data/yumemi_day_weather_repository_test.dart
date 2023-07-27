@@ -29,10 +29,10 @@ void main() {
       group('Return success', () {
         test(
             'fetch() return Weather value contained in  Result.success '
-            'when YumemiWeather return the correct Json.', () {
+            'when YumemiWeather return the correct Json.', () async {
           // Arrange
           when(
-            mockYumemiWeather.fetchWeather(any),
+            mockYumemiWeather.syncFetchWeather(any),
           ).thenReturn(
             '''
 {
@@ -45,7 +45,7 @@ void main() {
           );
 
           // Act
-          final actual = repository.fetch('', DateTime(2023));
+          final actual = await repository.fetch('', DateTime(2023));
 
           // Assert
           expect(
@@ -70,10 +70,10 @@ void main() {
             'when YumemiWeather return the incorrect Json.', () {
           const incorrectDataErrorText = '不適切なデータを取得しました';
 
-          test('When Out of int range', () {
+          test('When Out of int range', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -86,7 +86,7 @@ void main() {
             );
 
             // Act
-            final actual = repository.fetch('', DateTime(2023));
+            final actual = await repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
@@ -94,10 +94,10 @@ void main() {
               const Result<Weather, String>.failure(incorrectDataErrorText),
             );
           });
-          test('When unknown weather condition.', () {
+          test('When unknown weather condition.', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               // "arrow" is unknown weather condition
               '''
@@ -111,7 +111,7 @@ void main() {
             );
 
             // Act
-            final actual = repository.fetch('', DateTime(2023));
+            final actual = await repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
@@ -120,10 +120,10 @@ void main() {
             );
           });
 
-          test('When max temperature is string', () {
+          test('When max temperature is string', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -136,7 +136,7 @@ void main() {
             );
 
             // Act
-            final actual = repository.fetch('', DateTime(2023));
+            final actual = await repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
@@ -145,11 +145,11 @@ void main() {
             );
           });
 
-          test('When the date is not formatted', () {
+          test('When the date is not formatted', () async {
             const dateTextNotFormatted = '2023-5-22';
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -162,7 +162,7 @@ void main() {
             );
 
             // Act
-            final actual = repository.fetch('', DateTime(2023));
+            final actual = await repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
@@ -171,10 +171,10 @@ void main() {
             );
           });
 
-          test('When missing a property', () {
+          test('When missing a property', () async {
             // Arrange
             when(
-              mockYumemiWeather.fetchWeather(any),
+              mockYumemiWeather.syncFetchWeather(any),
             ).thenReturn(
               '''
 {
@@ -186,7 +186,7 @@ void main() {
             );
 
             // Act
-            final actual = repository.fetch('', DateTime(2023));
+            final actual = await repository.fetch('', DateTime(2023));
 
             // Assert
             expect(
@@ -199,14 +199,14 @@ void main() {
             'fetch() return invalid parameter error text value '
             'contained in Result.failure '
             'when YumemiWeather return '
-            '"YumemiWeatherError.invalidParameter"', () {
+            '"YumemiWeatherError.invalidParameter"', () async {
           // Arrange
           const invalidParameterText = 'パラメータが間違っています';
-          when(mockYumemiWeather.fetchWeather(any))
+          when(mockYumemiWeather.syncFetchWeather(any))
               .thenThrow(YumemiWeatherError.invalidParameter);
 
           // Act
-          final actual = repository.fetch('', date);
+          final actual = await repository.fetch('', date);
 
           // Assert
           expect(
@@ -219,14 +219,14 @@ void main() {
           'fetch() return unknown error text value '
           'contained in Result.failure '
           'when YumemiWeather return "YumemiWeatherError.unknown"',
-          () {
+          () async {
             // Arrange
             const unknownError = '不明なエラーが発生しました';
-            when(mockYumemiWeather.fetchWeather(any))
+            when(mockYumemiWeather.syncFetchWeather(any))
                 .thenThrow(YumemiWeatherError.unknown);
 
             // Act
-            final actual = repository.fetch('', date);
+            final actual = await repository.fetch('', date);
 
             // Assert
             expect(
