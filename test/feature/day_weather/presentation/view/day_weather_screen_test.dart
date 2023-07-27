@@ -69,7 +69,9 @@ void main() async {
           await robot.tapReloadButton();
 
           // Check LoadingDialog shown
-          robot.expectLoadingDialogShown();
+          robot
+            ..expectLoadingDialogShown()
+            ..weatherInfo.weatherIcon.expectNotExist();
 
           fetchCompleter.complete(result);
           await widgetTester.pump();
@@ -184,7 +186,9 @@ void main() async {
       );
       await robot.tapReloadButton();
       // Check LoadingDialogShown
-      robot.expectLoadingDialogShown();
+      robot
+        ..expectLoadingDialogShown()
+        ..expectErrorDialogNotShown();
 
       fetchCompleter.complete(result);
       await widgetTester.pump();

@@ -239,17 +239,44 @@ void main() {
       );
       final fetchCompleter = Completer<Result<Weather, String>>();
 
+      // 初期値を変更
       final resultSuccess = Result<Weather, String>.success(weather);
       when(useCaseMock.call()).thenAnswer((_) async => resultSuccess);
-
-      // Act
       await riverpodTestTools.container
           .read(dayWeatherApiCallStateProvider.notifier)
           .fetchWeather();
-      when(useCaseMock.call()).thenAnswer((_) => fetchCompleter.future);
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .valueOrNull,
+        resultSuccess,
+      );
 
+      // ローディング状態に変更
+      when(useCaseMock.call()).thenAnswer((_) => fetchCompleter.future);
+      final futureResult = riverpodTestTools.container
+          .read(dayWeatherApiCallStateProvider.notifier)
+          .fetchWeather();
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .isLoading,
+        isTrue,
+      );
+
+      // Act
       final actual = riverpodTestTools.container.read(dayWeatherProvider);
+
       fetchCompleter.complete(resultSuccess);
+      await futureResult;
+
+      // 念の為、ローディングが完了しているかを確認
+      expect(
+        riverpodTestTools.container
+            .read(dayWeatherApiCallStateProvider)
+            .isLoading,
+        isFalse,
+      );
 
       // Assert
       expect(actual, weather);
