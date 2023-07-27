@@ -27,7 +27,7 @@ class DayWeatherApiCallState extends _$DayWeatherApiCallState {
     if (state.isLoading) {
       return;
     }
-    state = ApiCallStatus.loading(state.asValue);
+    state = ApiCallStatus.loading(state.valueOrNull);
     state = ApiCallStatus.loaded(
       await ref.read(fetchDayWeatherUseCaseProvider).call(),
     );
@@ -36,6 +36,6 @@ class DayWeatherApiCallState extends _$DayWeatherApiCallState {
 
 @riverpod
 Weather? dayWeather(DayWeatherRef ref) =>
-    ref.watch(dayWeatherApiCallStateProvider).asValue?.whenOrNull(
+    ref.watch(dayWeatherApiCallStateProvider).valueOrNull?.whenOrNull(
           success: (weather) => weather,
         );

@@ -10,7 +10,7 @@ class ApiCallStatus<T> with _$ApiCallStatus<T> {
   const factory ApiCallStatus.loading(T? previous) = Loading<T>;
   const factory ApiCallStatus.loaded(T result) = Loaded<T>;
 
-  T? get asValue => whenOrNull(
+  T? get valueOrNull => whenOrNull(
         loaded: (value) => value,
         loading: (previous) => previous,
       );
