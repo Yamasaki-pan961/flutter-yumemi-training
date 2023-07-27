@@ -219,9 +219,9 @@ void main() {
       );
 
       const resultFailure = Result<Weather, String>.failure('');
+      when(useCaseMock.call()).thenAnswer((_) async => resultFailure);
 
       // Act
-      when(useCaseMock.call()).thenAnswer((_) async => resultFailure);
       await riverpodTestTools.container
           .read(dayWeatherApiCallStateProvider.notifier)
           .fetchWeather();
@@ -240,9 +240,9 @@ void main() {
       final fetchCompleter = Completer<Result<Weather, String>>();
 
       final resultSuccess = Result<Weather, String>.success(weather);
+      when(useCaseMock.call()).thenAnswer((_) async => resultSuccess);
 
       // Act
-      when(useCaseMock.call()).thenAnswer((_) async => resultSuccess);
       await riverpodTestTools.container
           .read(dayWeatherApiCallStateProvider.notifier)
           .fetchWeather();
