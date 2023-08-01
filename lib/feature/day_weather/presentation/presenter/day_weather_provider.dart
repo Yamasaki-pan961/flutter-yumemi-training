@@ -18,10 +18,16 @@ FetchDayWeatherUseCase fetchDayWeatherUseCase(FetchDayWeatherUseCaseRef ref) =>
     FetchDayWeatherUseCase(ref.watch(dayWeatherRepositoryProvider));
 
 @riverpod
+ApiCallStatus<Result<Weather, String>> dayWeatherApiCallInitialValue(
+  DayWeatherApiCallInitialValueRef ref,
+) =>
+    const ApiCallStatus<Result<Weather, String>>.notLoaded();
+
+@riverpod
 class DayWeatherApiCallState extends _$DayWeatherApiCallState {
   @override
   ApiCallStatus<Result<Weather, String>> build() =>
-      const ApiCallStatus.notLoaded();
+      ref.watch(dayWeatherApiCallInitialValueProvider);
 
   Future<void> fetchWeather() async {
     if (state.isLoading) {
