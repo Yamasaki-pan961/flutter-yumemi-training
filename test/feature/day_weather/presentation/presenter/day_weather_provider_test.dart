@@ -25,12 +25,9 @@ class RiverpodTestTools {
           overrides: [
             fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
             dayWeatherApiCallInitialValueProvider,
-            ...initialState == null
-                ? []
-                : [
-                    dayWeatherApiCallInitialValueProvider
-                        .overrideWithValue(initialState)
-                  ]
+            if (initialState != null)
+              dayWeatherApiCallInitialValueProvider
+                  .overrideWithValue(initialState)
           ],
         ) {
     addTearDown(container.dispose);
