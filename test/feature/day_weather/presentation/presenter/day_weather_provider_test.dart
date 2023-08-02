@@ -20,9 +20,14 @@ class Listener<T> extends Mock {
 class RiverpodTestTools {
   RiverpodTestTools({
     required FetchDayWeatherUseCase useCaseMock,
+    ApiCallStatus<Result<Weather, String>>? initialState,
   }) : container = ProviderContainer(
           overrides: [
             fetchDayWeatherUseCaseProvider.overrideWithValue(useCaseMock),
+            dayWeatherApiCallInitialValueProvider,
+            if (initialState != null)
+              dayWeatherApiCallInitialValueProvider
+                  .overrideWithValue(initialState)
           ],
         ) {
     addTearDown(container.dispose);
@@ -234,23 +239,19 @@ void main() {
 
     test('State retains previous value during loading', () async {
       // Arrange
+      final resultSuccess = Result<Weather, String>.success(weather);
       final riverpodTestTools = RiverpodTestTools(
         useCaseMock: useCaseMock,
+        // 初期値を変更
+        initialState: ApiCallStatus.loaded(resultSuccess),
       );
-      final fetchCompleter = Completer<Result<Weather, String>>();
-
-      // 初期値を変更
-      final resultSuccess = Result<Weather, String>.success(weather);
-      when(useCaseMock.call()).thenAnswer((_) async => resultSuccess);
-      await riverpodTestTools.container
-          .read(dayWeatherApiCallStateProvider.notifier)
-          .fetchWeather();
       expect(
         riverpodTestTools.container
             .read(dayWeatherApiCallStateProvider)
             .valueOrNull,
         resultSuccess,
       );
+      final fetchCompleter = Completer<Result<Weather, String>>();
 
       // ローディング状態に変更
       when(useCaseMock.call()).thenAnswer((_) => fetchCompleter.future);

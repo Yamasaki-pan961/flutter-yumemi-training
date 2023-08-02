@@ -41,7 +41,25 @@ final fetchDayWeatherUseCaseProvider =
 );
 
 typedef FetchDayWeatherUseCaseRef = ProviderRef<FetchDayWeatherUseCase>;
-String _$dayWeatherHash() => r'c9bd0b96015abbd03a86791fa7b005990a819e73';
+String _$dayWeatherApiCallInitialValueHash() =>
+    r'cde6d1bfe4e9e6594ba3cbdb681c88325ac74047';
+
+/// See also [dayWeatherApiCallInitialValue].
+@ProviderFor(dayWeatherApiCallInitialValue)
+final dayWeatherApiCallInitialValueProvider =
+    AutoDisposeProvider<ApiCallStatus<Result<Weather, String>>>.internal(
+  dayWeatherApiCallInitialValue,
+  name: r'dayWeatherApiCallInitialValueProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dayWeatherApiCallInitialValueHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef DayWeatherApiCallInitialValueRef
+    = AutoDisposeProviderRef<ApiCallStatus<Result<Weather, String>>>;
+String _$dayWeatherHash() => r'5a5a21a24e7610e4c712a4159d525e88307292f9';
 
 /// See also [dayWeather].
 @ProviderFor(dayWeather)
@@ -56,7 +74,7 @@ final dayWeatherProvider = AutoDisposeProvider<Weather?>.internal(
 
 typedef DayWeatherRef = AutoDisposeProviderRef<Weather?>;
 String _$dayWeatherApiCallStateHash() =>
-    r'db8ad8bad08204c77bdf569857fa1d752c769925';
+    r'2ffe24749e5cf335eb297d1fde286acdbe91836a';
 
 /// See also [DayWeatherApiCallState].
 @ProviderFor(DayWeatherApiCallState)
