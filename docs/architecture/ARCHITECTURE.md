@@ -32,8 +32,8 @@ flowchart BT
 
   subgraph Domain
     useCase(UseCase) .-> entity(Entity)
-    repository_interface(Repository Interface) --> 
-    | Dependency Inversion | useCase
+    useCase .-> repository_interface(Repository Interface)
+    repository_interface(Repository Interface)　.-> entity
   end
 
     subgraph Presentation
