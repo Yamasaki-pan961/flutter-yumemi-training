@@ -18,5 +18,13 @@
       "flutterMode": "release",
       "program": "lib/main.dart",
     },
+    {
+      "name": "Performance",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "args": ["--purge-persistent-cache"]
+    },
   ]
 }
